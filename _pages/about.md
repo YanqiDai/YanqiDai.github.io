@@ -20,7 +20,7 @@ My CV is here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vita
 # Selected Papers
 ------
 
-(† Corresponding author)
+(&dagger Corresponding author)
 
 - **MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
   **Yanqi Dai**, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen†, Zhiwu Lu†\
