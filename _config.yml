@@ -9,10 +9,10 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default"
-title                    : "Yanqi Dai (代彦琪) / Personal Homepage"
+title                    : "Yanqi Dai (代彦琪) / Homepage"
 title_separator          : "-"
 name                     : &name "Yanqi Dai (代彦琪)"
-description              : &description "personal description"
+description              : &description "Ph.D. Candidate in Artificial Intelligence"
 url                      : https://yanqidai.github.io # the base hostname & protocol for your site e.g. "https://[your GitHub username].github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "YanqiDai/YanqiDai.github.io"
@@ -24,8 +24,8 @@ author:
   # Biographic information
   avatar           : "yanqidai.png"
   name             : "Yanqi Dai (代彦琪)"
-  pronouns         : "he/his" # example: "she/her"  
-  bio              : "Short biography for the left-hand sidebar"
+  pronouns         : # example: "she/her"  
+  bio              : "Ph.D. Candidate in Artificial Intelligence"
   location         : "Beijing, China"
   employer         : "Renmin University of China"
   uri              : # URL
