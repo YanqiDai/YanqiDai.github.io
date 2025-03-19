@@ -1,9 +1,11 @@
 .container {
     width:100%;
+    max-width: 300px;
+    margin: 0 auto;
     border:1px solid #d3d3d3;
 }
 .container div {
-    width:100%;
+    width: auto;
 }
 .container .header {
     background-color:#d3d3d3;
@@ -12,6 +14,6 @@
     font-weight: bold;
 }
 .container .content {
-    display: none;
+    display: block;
     padding : 5px;
 }
