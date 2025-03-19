@@ -8,6 +8,7 @@ redirect_from:
 ---
 
 # About me
+------
 
 I am a third-year PhD candidate in the [Gaoling School of Artificial Intelligence](http://ai.ruc.edu.cn/), [Renmin University of China](https://www.ruc.edu.cn/), advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu) fortunately. Before that, I received my B.E. from the [School of Software](https://ss.dlut.edu.cn/), [Dalian University of Technology](https://www.dlut.edu.cn/).
 
@@ -17,6 +18,7 @@ Through my research, I aim to enhance the multi-task capabilities of large multi
 You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vitae.pdf)
 
 # Selected Papers
+------
 
 († Corresponding author)
 
