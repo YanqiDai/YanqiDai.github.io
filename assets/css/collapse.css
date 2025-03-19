@@ -15,3 +15,6 @@
     display: none;
     padding : 5px;
 }
+body {
+    font-size: 2px; /* 调整为所需的字体大小，例如12px */
+}
