@@ -35,9 +35,22 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
   UAI 2023 \[[paper](https://proceedings.mlr.press/v216/dai23a.html)\] \[[code](https://github.com/YanqiDai/IGB4MTL)\]
 
 # Experience
+------
 
 - **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06-2025.02)\
   Mentor: [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu)
+
+# Selected Honors \& Awards
+------
+
+- Scientific Research Fund, Renmin University of China, 2023
+- Excellent Scholarship for Postgraduate Study, Renmin University of China, 2023
+- First-Class Academic Scholarship for Postgraduate Study, Renmin University of China, 2023
+- Outstanding Graduate of Liaoning Province, 2022
+- Third Prize of Imagine Cup China Microsoft, 2021
+- Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2020
+- Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2019
+- First Prize of National Mathematics Competition for College Students, 2019
 
 <!--
 A data-driven personal website
