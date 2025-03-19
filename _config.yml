@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default"
-title                    : "Yanqi Dai (代彦琪) / Homepage"
+title                    : "Yanqi Dai (代彦琪)"
 title_separator          : "-"
 name                     : &name "Yanqi Dai (代彦琪)"
 description              : &description "Ph.D. Candidate in Artificial Intelligence"
