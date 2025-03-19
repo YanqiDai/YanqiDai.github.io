@@ -28,7 +28,7 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
 
 - **CoTBal: Comprehensive Task Balancing for Multi-Task Visual Instruction Tuning**\
   **Yanqi Dai**, Zebin You, Dong Jing, Yutian Luo, Nanyi Fei, Guoxing Yang, Zhiwu Lu†\
-  ArXiv \[[paper](https://arxiv.org/abs/2403.04343)\]
+  Preprint, 2024 \[[paper](https://arxiv.org/abs/2403.04343)\]
 
 - **Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu†\
