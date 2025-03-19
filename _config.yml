@@ -22,7 +22,7 @@ repository               : "YanqiDai/YanqiDai.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "images/yanqidai.png"
+  avatar           : "yanqidai.png"
   name             : "Yanqi Dai (代彦琪)"
   pronouns         : "he/his" # example: "she/her"  
   bio              : "Short biography for the left-hand sidebar"
@@ -51,7 +51,7 @@ author:
 
   # Social media
   bluesky          : # "bsky.app" # Replace this with you Bluesky username
-  facebook         : "Yechiel Dai" # Username
+  facebook         : "https://www.facebook.com/profile.php?id=100093071842825" # Username
   flickr           : # Username
   foursquare       : # Username
   goodreads        : # Username
