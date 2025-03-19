@@ -15,7 +15,7 @@ I am a third-year Ph.D. candidate in the [Gaoling School of Artificial Intellige
 My research interests include **large multimodal models**, **multimodal role-playing agents**, and **multi-task learning**.
 Through my research, I aim to enhance the multi-task capabilities of large multimodal models and apply multimodal role-playing in mental health.
 
-You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vitae.pdf)
+My CV is here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vitae.pdf).
 
 # Selected Papers
 ------
