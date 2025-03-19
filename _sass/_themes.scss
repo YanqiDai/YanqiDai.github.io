@@ -7,7 +7,7 @@
    ========================================================================== */
 
 /* Used to set the size for <em> */
-$doc-font-size              : 12;
+$doc-font-size              : 16;
 
 /* Paragraph indention */
 $paragraph-indent           : false; // true, false (default)
@@ -49,11 +49,11 @@ $caption-font-family        : $serif;
 
 @include breakpoint-set("to ems", true);
 
-$small                      : 900px !default;
-$medium                     : 1152px !default;
-$medium-wide                : 1300px !default;
-$large                      : 1387px !default;
-$x-large                    : 1920px !default;
+$small                      : 600px !default;
+$medium                     : 768px !default;
+$medium-wide                : 900px !default;
+$large                      : 925px !default;
+$x-large                    : 1280px !default;
 
 /* ==========================================================================
    Grid
