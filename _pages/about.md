@@ -43,12 +43,12 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
 # Selected Honors & Awards
 ------
 
-- Scientific Research Fund, Renmin University of China, 2023
-- Excellent Scholarship for Postgraduate Study, Renmin University of China, 2023
-- First-Class Academic Scholarship for Postgraduate Study, Renmin University of China, 2023
+- Scientific Research Fund, RUC, 2023
+- Excellent Scholarship for Postgraduate Study, RUC, 2023
+- First-Class Academic Scholarship for Postgraduate Study, RUC, 2023
 - Outstanding Graduate of Liaoning Province, 2022
-- Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2020
-- Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2019
+- Toly Bread Alumni Scholarship, DUT (awarded to 30 students per year), 2020
+- Toly Bread Alumni Scholarship, DUT (awarded to 30 students per year), 2019
 - First Prize in National Mathematics Competition for College Students, 2019
 
 
