@@ -10,7 +10,7 @@ redirect_from:
 # About me
 ------
 
-I am a third-year PhD candidate in the [Gaoling School of Artificial Intelligence](http://ai.ruc.edu.cn/), [Renmin University of China](https://www.ruc.edu.cn/), advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu) fortunately. Before that, I received my B.E. from the [School of Software](https://ss.dlut.edu.cn/), [Dalian University of Technology](https://www.dlut.edu.cn/).
+I am a third-year Ph.D. candidate in the [Gaoling School of Artificial Intelligence](http://ai.ruc.edu.cn/), [Renmin University of China](https://www.ruc.edu.cn/), advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu) fortunately. Before that, I received my B.E. from the [School of Software](https://ss.dlut.edu.cn/), [Dalian University of Technology](https://www.dlut.edu.cn/).
 
 My research interests lie in **large multimodal models**, **multimodal role-playing agents**, and **multi-task learning**.
 Through my research, I aim to enhance the multi-task capabilities of large multimodal models and apply multimodal role-playing in mental health.
