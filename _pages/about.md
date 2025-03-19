@@ -7,10 +7,10 @@ redirect_from:
   - /about.html
 ---
 
-I am a PhD candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, supervised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu).
+I am a PhD candidate in the [Gaoling School of Artificial Intelligence](http://ai.ruc.edu.cn/) at [Renmin University of China](https://www.ruc.edu.cn/), supervised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu).
 
 My research interests lie in **large multimodal models, multimodal role-playing agents, and multi-task learning**. 
-Through my research, I aim to develop more powerful large multimodal multi-task models and explore the application of multimodal role-playing on mental health.
+Through my research, my goal is to enhance the multi-task capabilities of large multimodal models and apply multimodal role-playing in mental health.
 
 A data-driven personal website
 ======
