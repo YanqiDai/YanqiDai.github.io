@@ -18,7 +18,7 @@ Through my research, I aim to enhance the multi-task capabilities of large multi
 You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vitae.pdf)
 
 # Selected Papers
-======
+------
 
 († Corresponding author)
 
@@ -33,6 +33,11 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
 - **Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu†\
   UAI 2023 \[[paper](https://proceedings.mlr.press/v216/dai23a.html)\] \[[code](https://github.com/YanqiDai/IGB4MTL)\]
+
+# Experience
+
+- **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06-2025.02)\
+  Mentor: [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu)
 
 <!--
 A data-driven personal website
