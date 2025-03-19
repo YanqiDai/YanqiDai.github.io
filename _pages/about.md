@@ -47,10 +47,9 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
 - Excellent Scholarship for Postgraduate Study, Renmin University of China, 2023
 - First-Class Academic Scholarship for Postgraduate Study, Renmin University of China, 2023
 - Outstanding Graduate of Liaoning Province, 2022
-- Third Prize of Imagine Cup China Microsoft, 2021
 - Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2020
 - Toly Bread Alumni Scholarship, Dalian University of Technology (awarded to 30 students per year), 2019
-- First Prize of National Mathematics Competition for College Students, 2019
+- First Prize in National Mathematics Competition for College Students, 2019
 
 <!--
 A data-driven personal website
