@@ -569,3 +569,6 @@ border-radius: .1em;
 .ai-inverse {
   color: #fff;
 }
+body {
+    font-size: 3px; /* 调整为所需的字体大小，例如12px */
+}
