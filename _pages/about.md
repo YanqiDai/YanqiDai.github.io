@@ -37,7 +37,7 @@ You can find my CV here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curri
 # Experience
 ------
 
-- **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06 - 2025.02)\
+- **Algorithm Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06 - 2025.02)\
   Mentor: [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu)
 
 # Selected Honors & Awards
