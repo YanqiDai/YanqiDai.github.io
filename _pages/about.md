@@ -37,11 +37,9 @@ My CV is here: [Yanqi Dai's Curriculum Vitae](../assets/YanqiDai_Curriculum_Vita
 # Experience
 ------
 
-- **Algorithm Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (2025.03 - Present)\
-  Mentor: Yong Wang
+- **Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (2025.03 - Present)
 
-- **Algorithm Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06 - 2025.02)\
-  Mentor: [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu)
+- **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06 - 2025.02)
 
 # Selected Honors & Awards
 ------
