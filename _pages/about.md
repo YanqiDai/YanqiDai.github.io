@@ -18,19 +18,24 @@ Through my research, I aim to enhance the multi-task capabilities of large multi
 # Selected Papers
 ------
 
-(\* Corresponding author)
-
 - **MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
   **Yanqi Dai**, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen\*, Zhiwu Lu\*\
   ICLR 2025 \[[paper](https://arxiv.org/abs/2408.04203)\] \[[code](https://github.com/YanqiDai/MMRole)\] \[[data](https://huggingface.co/datasets/YanqiDai/MMRole_dataset)\]
 
+- **Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts**\
+  Jinqiang Long†, **Yanqi Dai**†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu\
+  ArXiv, 2024 \[[paper](https://arxiv.org/abs/2411.10669)\]
+
 - **CoTBal: Comprehensive Task Balancing for Multi-Task Visual Instruction Tuning**\
   **Yanqi Dai**, Zebin You, Dong Jing, Yutian Luo, Nanyi Fei, Guoxing Yang, Zhiwu Lu\*\
-  Preprint, 2024 \[[paper](https://arxiv.org/abs/2403.04343)\]
+  ArXiv, 2024 \[[paper](https://arxiv.org/abs/2403.04343)\]
 
 - **Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu\*\
   UAI 2023 \[[paper](https://proceedings.mlr.press/v216/dai23a.html)\] \[[code](https://github.com/YanqiDai/IGB4MTL)\]
+
+\* Corresponding author\
+† Equal contribution
 
 # Experience
 ------
