@@ -10,10 +10,10 @@ redirect_from:
 # About me
 ------
 
-I am a third-year Ph.D. candidate in the [Gaoling School of Artificial Intelligence](http://ai.ruc.edu.cn/), [Renmin University of China](https://www.ruc.edu.cn/), advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu) fortunately. Before that, I received my B.E. from the [School of Software](https://ss.dlut.edu.cn/), [Dalian University of Technology](https://www.dlut.edu.cn/).
+I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, where I am fortunate to be advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu). I am currently a visiting student at the College of Computing and Data Science, Nanyang Technological University, under the supervision of Prof. [Hanwang Zhang](https://personal.ntu.edu.sg/hanwangzhang/).
+Before my doctoral studies, I received my B.E. from the School of Software at Dalian University of Technology.
 
-My research interests include **large multimodal models**, **multimodal role-playing agents**, and **multi-task learning**.
-Through my research, I aim to enhance the multi-task capabilities of large multimodal models and apply multimodal role-playing in mental health.
+My research interests focus on **large multimodal models**, **role-playing agents**, **RL reasoning**, and **multi-task learning**.
 
 # Selected Papers
 ------
@@ -40,7 +40,7 @@ Through my research, I aim to enhance the multi-task capabilities of large multi
 # Experience
 ------
 
-- **Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (2025.03 - Present)
+- **Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (2025.03 - 2025.09)
 
 - **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (2023.06 - 2025.02)
 
