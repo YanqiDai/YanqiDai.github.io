@@ -20,6 +20,10 @@ Through my research, I aim to develop more powerful and versatile large multimod
 # Selected Papers
 ------
 
+- **(ICLR 2026) Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation**\
+  **Yanqi Dai**, Yuxiang Ji, Xiao Zhang, Yong Wang\*, Xiangxiang Chu, Zhiwu Lu\*\
+  \[[paper](https://openreview.net/forum?id=nfURupkdRJ)\]
+
 - **(WWW 2026) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
   **Yanqi Dai**, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu\*\
   \[[paper](https://arxiv.org/abs/2403.04343)\]
