@@ -22,23 +22,33 @@ Through my research, I aim to develop more powerful and versatile large multimod
 
 - **(ICLR 2026) Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation**\
   **Yanqi Dai**, Yuxiang Ji, Xiao Zhang, Yong Wang\*, Xiangxiang Chu, Zhiwu Lu\*\
-  \[[paper](https://openreview.net/forum?id=nfURupkdRJ)\]
+  [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2601.20614)
+  [![](https://img.shields.io/badge/Hugging_Face-Paper-yellow?logo=huggingface)](https://huggingface.co/papers/2601.20614)
+  [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/AMAP-ML/MathForge)
+  [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented)\
+  Huggingface Daily Papers **#1 of the day**
 
 - **(WWW 2026) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
   **Yanqi Dai**, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu\*\
-  \[[paper](https://arxiv.org/abs/2403.04343)\]
+  [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2403.04343)
+  [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/VisATB)
 
 - **(ICLR 2025) MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
   **Yanqi Dai**, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen\*, Zhiwu Lu\*\
-  \[[paper](https://arxiv.org/abs/2408.04203)\] \[[code](https://github.com/YanqiDai/MMRole)\] \[[data](https://huggingface.co/datasets/YanqiDai/MMRole_dataset)\]
+  [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2408.04203)
+  [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/MMRole)
+  [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MMRole_dataset)
 
 - **Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts**\
   Jinqiang Long†, **Yanqi Dai**†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu\
-  ArXiv, 2024 \[[paper](https://arxiv.org/abs/2411.10669)\]
+  Technical Report, 2024 \
+  [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2411.10669)
+  [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/MetabrainAGI/Awaker2.5-VL)
 
 - **(UAI 2023) Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu\*\
-  \[[paper](https://proceedings.mlr.press/v216/dai23a.html)\] \[[code](https://github.com/YanqiDai/IGB4MTL)\]
+  [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2307.15429)
+  [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/IGB4MTL)
 
 † Equal contribution\
 \* Corresponding author
