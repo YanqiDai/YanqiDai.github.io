@@ -9,6 +9,8 @@ redirect_from:
 
 # About me
 ------
+<span style="color:red"><strong>I expect to graduate in June 2027 and am actively exploring opportunities in both industry and research positions.</strong></span>
+I welcome discussions and potential collaborations, and please feel free to reach out.
 
 I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, supervised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu). 
 I am currently a visiting student in the College of Computing and Data Science at Nanyang Technological University, advised by Prof. [Luu Anh Tuan](https://tuanluu.github.io) and Prof. [Hanwang Zhang](https://scholar.google.com.sg/citations?user=YG0DFyYAAAAJ).
@@ -20,7 +22,7 @@ Through my research, I aim to develop more powerful and versatile large multimod
 # Selected Papers
 ------
 
-- **(ICLR 2026) Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation**\
+- **[ICLR 2026] (MathForge) Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation**\
   **Yanqi Dai**, Yuxiang Ji, Xiao Zhang, Yong Wang\*, Xiangxiang Chu, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2601.20614)
   [![](https://img.shields.io/badge/Hugging_Face-Paper-yellow?logo=huggingface)](https://huggingface.co/papers/2601.20614)
@@ -28,12 +30,12 @@ Through my research, I aim to develop more powerful and versatile large multimod
   [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented)\
   Huggingface Daily Papers **#1 of the day**
 
-- **(WWW 2026) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
+- **[WWW 2026] (VisATB) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
   **Yanqi Dai**, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2403.04343)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/VisATB)
 
-- **(ICLR 2025) MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
+- **[ICLR 2025] MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
   **Yanqi Dai**, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen\*, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2408.04203)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/MMRole)
@@ -45,7 +47,7 @@ Through my research, I aim to develop more powerful and versatile large multimod
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2411.10669)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/MetabrainAGI/Awaker2.5-VL)
 
-- **(UAI 2023) Improvable Gap Balancing for Multi-Task Learning**\
+- **[UAI 2023] Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2307.15429)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/IGB4MTL)
