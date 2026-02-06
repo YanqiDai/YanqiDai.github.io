@@ -40,14 +40,16 @@ Through my research, I aim to develop more powerful and versatile large multimod
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2408.04203)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/MMRole)
   [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MMRole_dataset)
+  [![](https://img.shields.io/badge/WeChat-News-green?logo=wechat)](https://mp.weixin.qq.com/s/I8gyDv9K8uhB3EXF_2_zVw)
 
 - **Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts**\
   Jinqiang Long†, **Yanqi Dai**†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu\
   Technical Report, 2024 \
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2411.10669)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/MetabrainAGI/Awaker2.5-VL)
+  [![](https://img.shields.io/badge/WeChat-News-green?logo=wechat)](https://mp.weixin.qq.com/s/R-D1QKht61YETfBep10nAQ)
 
-- **[UAI 2023] Improvable Gap Balancing for Multi-Task Learning**\
+- **[UAI 2023] (IGB) Improvable Gap Balancing for Multi-Task Learning**\
   **Yanqi Dai**, Nanyi Fei, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2307.15429)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/IGB4MTL)
