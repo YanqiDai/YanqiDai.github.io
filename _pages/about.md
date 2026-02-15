@@ -7,8 +7,8 @@ redirect_from:
   - /about.html
 ---
 
-# About me
-------
+## About me
+
 <span style="color:red"><strong>I expect to graduate in June 2027 and am actively exploring opportunities in both industry and research positions.</strong></span>
 I welcome discussions and potential collaborations, and please feel free to reach out.
 
