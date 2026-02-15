@@ -1,3 +1,4 @@
+# 需要 Ruby >= 3.0（推荐 3.2+），系统若为 2.x 请用 rbenv 等升级
 source 'https://rubygems.org'
 
 group :jekyll_plugins do

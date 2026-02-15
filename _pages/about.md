@@ -28,12 +28,13 @@ Through my research, I aim to develop more powerful and versatile large multimod
   [![](https://img.shields.io/badge/Hugging_Face-Paper-yellow?logo=huggingface)](https://huggingface.co/papers/2601.20614)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/AMAP-ML/MathForge)
   [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented)\
-  Huggingface Daily Papers **#1 of the day**
+  Huggingface Daily Papers **#2 of the day**
 
 - **[WWW 2026] (VisATB) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
   **Yanqi Dai**, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2403.04343)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/VisATB)
+  [![](https://img.shields.io/badge/WeChat-News-green?logo=wechat)](https://mp.weixin.qq.com/s/Daz8KaCvQ44XPp4R_Wqf-A)
 
 - **[ICLR 2025] MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents**\
   **Yanqi Dai**, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen\*, Zhiwu Lu\*\
