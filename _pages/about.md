@@ -7,7 +7,7 @@ redirect_from:
   - /about.html
 ---
 
-## About me
+# About me
 
 <span style="color:red"><strong>I expect to graduate in June 2027 and am actively exploring opportunities in both industry and research positions.</strong></span>
 I welcome discussions and potential collaborations, and please feel free to reach out.
@@ -20,7 +20,6 @@ My research interests lie in **large multimodal models, RL for reasoning, and mu
 Through my research, I aim to develop more powerful and versatile large multimodal models.
 
 # Selected Papers
-------
 
 - **[ICLR 2026] (MathForge) Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation**\
   **Yanqi Dai**, Yuxiang Ji, Xiao Zhang, Yong Wang\*, Xiangxiang Chu, Zhiwu Lu\*\
@@ -60,14 +59,12 @@ Through my research, I aim to develop more powerful and versatile large multimod
 
 
 # Experience
-------
 
 - **Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (Mar 2025 - Dec 2025)
 
 - **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (Jun 2023 - Feb 2025)
 
 # Selected Honors & Awards
-------
 
 - Excellent Scholarship for Postgraduate Study, RUC, 2025
 - Excellent Scholarship for Postgraduate Study, RUC, 2023
@@ -77,5 +74,3 @@ Through my research, I aim to develop more powerful and versatile large multimod
 - Toly Bread Alumni Scholarship, DUT (awarded to 30 students per year), 2020
 - Toly Bread Alumni Scholarship, DUT (awarded to 30 students per year), 2019
 - First Prize in National Mathematics Competition for College Students, 2019
-
-
