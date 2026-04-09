@@ -29,7 +29,7 @@ Through my research, I aim to develop more powerful and versatile large multimod
   [![](https://img.shields.io/badge/HuggingFace-Data-blue?logo=huggingface)](https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented)\
   Huggingface Daily Papers **#2 of the day**
 
-- **[WWW 2026] (VisATB) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
+- **[WWW 2026, Oral] (VisATB) Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty**\
   **Yanqi Dai**, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu\*\
   [![](https://img.shields.io/badge/arXiv-Paper-red?logo=arxiv)](https://arxiv.org/abs/2403.04343)
   [![](https://img.shields.io/badge/Github-Code-black?logo=github)](https://github.com/YanqiDai/VisATB)
