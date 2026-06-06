@@ -9,8 +9,8 @@ redirect_from:
 
 # About me
 
-<span style="color:red"><strong>I expect to graduate in June 2027 and am actively exploring opportunities in both industry and research positions.</strong></span>
-I welcome discussions and potential collaborations, and please feel free to reach out.
+<span style="color:red"><strong>Expected to graduate in June 2027, I am seeking industry opportunities in foundational models, including LLMs, VLMs, and UMMs.</strong></span>
+Feel free to reach out if you have relevant opportunities or insights to share.
 
 I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, supervised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu). 
 I am currently a visiting student in the College of Computing and Data Science at Nanyang Technological University, advised by Prof. [Luu Anh Tuan](https://tuanluu.github.io) and Prof. [Hanwang Zhang](https://scholar.google.com.sg/citations?user=YG0DFyYAAAAJ).
