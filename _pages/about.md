@@ -65,7 +65,7 @@ Through my research, I aim to develop more capable and versatile large multimoda
 - **Visiting Student**, College of Computing and Data Science at [Nanyang Technological University](https://www.ntu.edu.sg/), Singapore (Sep 2025 - May 2026)\
   Advisor: [Hanwang Zhang](https://scholar.google.com.sg/citations?user=YG0DFyYAAAAJ)
 
-- **Research Intern**, Machine Learning Team, [Amap-Alibaba Group](https://www.alibabagroup.com/about-alibaba-businesses-1747844658454593536), Beijing (Mar 2025 - Sep 2025)\
+- **Research Intern**, Multimodal Team in Machine Learning Department, [Amap-Alibaba Group](https://www.alibabagroup.com/about-alibaba-businesses-1747844658454593536), Beijing (Mar 2025 - Sep 2025)\
   Mentor: [Yong Wang](https://scholar.google.com/citations?user=rAtlzLcAAAAJ)
 
 - **Algorithm Intern**, Model Team, [Metabrain AGI](https://www.metabrainagi.com/), Beijing (Jun 2023 - Feb 2025)\
