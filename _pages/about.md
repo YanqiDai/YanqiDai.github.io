@@ -12,12 +12,11 @@ redirect_from:
 <span style="color:red"><strong>Expected to graduate in June 2027, I am seeking industry opportunities in foundational models, including LLMs, VLMs, and UMMs.</strong></span>
 Feel free to reach out if you have relevant opportunities or insights to share.
 
-I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, supervised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu). 
-I am currently a visiting student in the College of Computing and Data Science at Nanyang Technological University, advised by Prof. [Luu Anh Tuan](https://tuanluu.github.io) and Prof. [Hanwang Zhang](https://scholar.google.com.sg/citations?user=YG0DFyYAAAAJ).
+I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, advised by Prof. [Zhiwu Lu](https://gsai.ruc.edu.cn/english/luzhiwu). 
 Before my doctoral studies, I received my B.E. from the School of Software at Dalian University of Technology.
 
-My research interests lie in **large multimodal models, RL for reasoning, and multi-task learning**.
-Through my research, I aim to develop more powerful and versatile large multimodal models.
+My research interests lie in **large multimodal models, reinforcement learning for reasoning, and multi-task learning**.
+Through my research, I aim to develop more capable and versatile large multimodal models.
 
 # Selected Papers
 
@@ -60,9 +59,17 @@ Through my research, I aim to develop more powerful and versatile large multimod
 
 # Experience
 
-- **Research Intern**, [Amap-Alibaba Group](https://mobile.amap.com/), Beijing, China (Mar 2025 - Dec 2025)
+- **Algorithm Intern**, VLM Team in Base Group, [Zhipu AI](https://www.zhipuai.cn/zh/about), Beijing (May 2026 - Present)\
+  Mentors: [Zhengxiao Du](https://zxdu.xyz/), [Weihan Wang](https://scholar.google.com/citations?user=UaxGkIwAAAAJ)
 
-- **Research Intern**, [Metabrain AGI](https://www.metabrainagi.com/), Beijing, China (Jun 2023 - Feb 2025)
+- **Visiting Student**, College of Computing and Data Science at [Nanyang Technological University](https://www.ntu.edu.sg/), Singapore (Sep 2025 - May 2026)\
+  Advisor: [Hanwang Zhang](https://scholar.google.com.sg/citations?user=YG0DFyYAAAAJ)
+
+- **Research Intern**, Machine Learning Team, [Amap-Alibaba Group](https://www.alibabagroup.com/about-alibaba-businesses-1747844658454593536), Beijing (Mar 2025 - Sep 2025)\
+  Mentor: [Yong Wang](https://scholar.google.com/citations?user=rAtlzLcAAAAJ)
+
+- **Algorithm Intern**, Model Team, [Metabrain AGI](https://www.metabrainagi.com/), Beijing (Jun 2023 - Feb 2025)\
+  Mentor: [Zhiwu Lu](https://gsai.ruc.edu.cn/luzhiwu)
 
 # Selected Honors & Awards
 
