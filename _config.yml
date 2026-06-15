@@ -71,7 +71,7 @@ author:
   vine             : # Username
   weibo            : # Username
   wikipedia        : # Username
-  xiaohongshu      : # Username or profile ID
+  xiaohongshu      : "5ba9eeb265f0230001b86ede" # Username or profile ID
   xing             : # Username
   youtube          : # Username
   zhihu            : # Username
