@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Yanqi Dai (代彦琪) — AI Ph.D. Candidate working on large multimodal models, reinforcement learning for reasoning, and multi-task learning." />
+  <title>Yanqi Dai's Homepage</title>
+
+  <!-- Theme color follows the dark/light surface -->
+  <meta name="theme-color" content="#060914" media="(prefers-color-scheme: dark)" />
+  <meta name="theme-color" content="#eef1f9" media="(prefers-color-scheme: light)" />
+
+  <!-- Inline SVG favicon: the "YD" brand mark, no extra request -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%2343e8ff'/%3E%3Cstop offset='1' stop-color='%238affc1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='30' font-weight='700' text-anchor='middle' fill='%2306111f'%3EYD%3C/text%3E%3C/svg%3E" />
+
+  <!-- Open Graph / Twitter share cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Yanqi Dai (代彦琪) | AI Ph.D. Candidate" />
+  <meta property="og:description" content="AI Ph.D. Candidate working on large multimodal models, reinforcement learning for reasoning, and multi-task learning. Seeking industry positions on foundation models." />
+  <meta property="og:url" content="https://yanqidai.github.io/" />
+  <meta property="og:image" content="https://yanqidai.github.io/images/yanqidai.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Yanqi Dai (代彦琪) | AI Ph.D. Candidate" />
+  <meta name="twitter:description" content="AI Ph.D. Candidate working on large multimodal models, reinforcement learning for reasoning, and multi-task learning." />
+  <meta name="twitter:image" content="https://yanqidai.github.io/images/yanqidai.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script>
+    // Apply saved/system theme before first paint to avoid a flash.
+    (function () {
+      try {
+        var saved = localStorage.getItem('theme');
+        var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+        var theme = saved || (prefersLight ? 'light' : 'dark');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #060914;
+      --bg-2: #0b1020;
+      --card: rgba(255, 255, 255, 0.075);
+      --card-strong: rgba(255, 255, 255, 0.12);
+      --text: #f6f8ff;
+      --muted: #aeb9d8;
+      --muted-2: #7582a6;
+      --line: rgba(255, 255, 255, 0.14);
+      --cyan: #43e8ff;
+      --violet: #a779ff;
+      --pink: #ff5ad9;
+      --green: #8affc1;
+      --yellow: #ffd36e;
+      --shadow: 0 26px 90px rgba(0, 0, 0, 0.5);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --max: 1180px;
+
+      /* themeable surfaces */
+      --grad-edge: #ffffff;
+      --grid-line: rgba(255, 255, 255, 0.05);
+      --grid-mask: rgba(0, 0, 0, 0.75);
+      --nav-bg: rgba(6, 9, 20, 0.62);
+      --menu-bg: rgba(6, 9, 20, 0.92);
+      --orbit-line: rgba(255, 255, 255, 0.18);
+      --orb-opacity: 0.25;
+      --glow-cyan: rgba(67, 232, 255, 0.22);
+      --glow-violet: rgba(167, 121, 255, 0.24);
+      --glow-pink: rgba(255, 90, 217, 0.16);
+    }
+
+    html[data-theme="light"] {
+      --bg: #eef1f9;
+      --bg-2: #ffffff;
+      --card: rgba(255, 255, 255, 0.66);
+      --card-strong: rgba(255, 255, 255, 0.92);
+      --text: #0e1428;
+      --muted: #4a5478;
+      --muted-2: #7582a6;
+      --line: rgba(13, 20, 40, 0.12);
+      --cyan: #0b9fc4;
+      --violet: #7c4dff;
+      --pink: #d6309a;
+      --green: #11a567;
+      --yellow: #b9820a;
+      --shadow: 0 26px 70px rgba(40, 60, 120, 0.16);
+
+      --grad-edge: #0e1428;
+      --grid-line: rgba(13, 20, 40, 0.05);
+      --grid-mask: rgba(0, 0, 0, 0.55);
+      --nav-bg: rgba(255, 255, 255, 0.74);
+      --menu-bg: rgba(255, 255, 255, 0.96);
+      --orbit-line: rgba(13, 20, 40, 0.16);
+      --orb-opacity: 0.16;
+      --glow-cyan: rgba(67, 232, 255, 0.18);
+      --glow-violet: rgba(167, 121, 255, 0.16);
+      --glow-pink: rgba(255, 90, 217, 0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 15%, var(--glow-cyan), transparent 28%),
+        radial-gradient(circle at 80% 10%, var(--glow-violet), transparent 30%),
+        radial-gradient(circle at 75% 80%, var(--glow-pink), transparent 28%),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 72px 72px;
+      mask-image: radial-gradient(circle at center, var(--grid-mask), transparent 78%);
+      z-index: -3;
+    }
+
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      z-index: -2;
+    }
+
+    .orb {
+      position: fixed;
+      width: 42vw;
+      height: 42vw;
+      border-radius: 999px;
+      filter: blur(70px);
+      opacity: var(--orb-opacity);
+      pointer-events: none;
+      animation: floatOrb 14s ease-in-out infinite alternate;
+      z-index: -1;
+    }
+
+    .orb.one { left: -12vw; top: 5vh; background: var(--cyan); }
+    .orb.two { right: -18vw; top: 38vh; background: var(--violet); animation-delay: -4s; }
+    .orb.three { left: 30vw; bottom: -24vw; background: var(--pink); animation-delay: -8s; }
+
+    @keyframes floatOrb {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(6vw, -4vh, 0) scale(1.12); }
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      z-index: 1000;
+      background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink));
+      box-shadow: 0 0 20px rgba(67,232,255,0.65);
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 38px));
+      margin: 0 auto;
+    }
+
+    .nav-wrap {
+      position: sticky;
+      top: 16px;
+      z-index: 100;
+      margin-top: 16px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 13px 14px 13px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(22px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+      color: #06111f;
+      background: linear-gradient(135deg, #43e8ff, #8affc1);
+      box-shadow: 0 0 24px rgba(67,232,255,0.42);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 10px 13px;
+      border-radius: 999px;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: var(--card-strong);
+    }
+
+    .nav-links a.active {
+      color: var(--text);
+      background: var(--card-strong);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .nav-toggle-bar {
+      width: 18px;
+      height: 2px;
+      margin: 0 auto;
+      border-radius: 2px;
+      background: var(--text);
+      transition: transform 0.25s ease, opacity 0.2s ease;
+    }
+
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    .theme-toggle {
+      display: inline-grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: rgba(67, 232, 255, 0.5);
+      background: var(--card-strong);
+    }
+
+    .theme-toggle svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .theme-toggle .icon-moon { display: none; }
+    .theme-toggle .icon-sun { display: block; }
+    html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+    html[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+
+    .nav-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero {
+      min-height: calc(100vh - 80px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      gap: 34px;
+      align-items: center;
+      padding: 78px 0 58px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(138, 255, 193, 0.1);
+      border: 1px solid rgba(138, 255, 193, 0.22);
+    }
+
+    .pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(138,255,193,0.75);
+      animation: pulse 1.9s infinite;
+    }
+
+    @keyframes pulse {
+      70% { box-shadow: 0 0 0 12px rgba(138,255,193,0); }
+      100% { box-shadow: 0 0 0 0 rgba(138,255,193,0); }
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 112px);
+      line-height: 0.92;
+      margin: 22px 0 20px;
+      letter-spacing: -0.085em;
+      max-width: 880px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(110deg, var(--grad-edge) 0%, var(--cyan) 26%, var(--violet) 58%, var(--pink) 82%, var(--grad-edge) 100%);
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 6s ease-in-out infinite;
+    }
+
+    @keyframes shine {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-lead {
+      color: var(--muted);
+      font-size: clamp(17px, 2.1vw, 22px);
+      line-height: 1.7;
+      max-width: 780px;
+      margin: 0 0 26px;
+    }
+
+    .hero-lead strong { color: var(--text); }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 800;
+      border: 1px solid var(--line);
+      color: var(--text);
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      border-color: rgba(67,232,255,0.55);
+      background: var(--card-strong);
+    }
+
+    .btn.primary {
+      color: #06111f;
+      border-color: transparent;
+      background: linear-gradient(135deg, #43e8ff, #8affc1);
+      box-shadow: 0 14px 38px rgba(67,232,255,0.24);
+    }
+
+    .hero-card {
+      position: relative;
+      padding: 18px;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      border-radius: inherit;
+      padding: 2px;
+      background: linear-gradient(135deg, var(--cyan), transparent 28%, var(--violet), transparent 68%, var(--pink));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.78;
+      pointer-events: none;
+    }
+
+    .portrait-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      aspect-ratio: 1 / 1;
+      background:
+        linear-gradient(135deg, rgba(67,232,255,0.18), rgba(167,121,255,0.16) 55%, rgba(255,90,217,0.14)),
+        rgba(255,255,255,0.06);
+    }
+
+    .portrait-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.015);
+      filter: saturate(1.05) contrast(1.03);
+    }
+
+    .portrait-wrap::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, transparent 45%, rgba(6,9,20,0.78)),
+        radial-gradient(circle at 25% 10%, rgba(67,232,255,0.20), transparent 36%);
+    }
+
+    .status-card {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      z-index: 2;
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(6, 9, 20, 0.54);
+      backdrop-filter: blur(18px);
+    }
+
+    .status-card h2 {
+      margin: 0 0 6px;
+      font-size: 22px;
+      letter-spacing: -0.03em;
+      color: #f6f8ff;
+    }
+
+    .status-card p {
+      color: #cbd5f0;
+      margin: 0;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .floating-chip {
+      position: absolute;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      max-width: 210px;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: rgba(245, 250, 255, 0.54);
+      border: 1px solid rgba(255,255,255,0.7);
+      color: #111827;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.22);
+      text-shadow: none;
+      font-weight: 800;
+      font-size: 12px;
+      line-height: 1.25;
+      text-align: center;
+      animation: chipFloat 4.5s ease-in-out infinite alternate;
+    }
+
+    .chip-a { top: 40px; left: 0; }
+    .chip-b { top: 126px; right: 0; animation-delay: -2s; }
+    .chip-c { bottom: 170px; left: 0; animation-delay: -3s; }
+
+    @keyframes chipFloat {
+      from { transform: translateY(0); }
+      to { transform: translateY(-13px); }
+    }
+
+    section { padding: 72px 0; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    .section-kicker {
+      font-family: "JetBrains Mono", monospace;
+      color: var(--cyan);
+      font-size: 13px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: clamp(31px, 5vw, 62px);
+      line-height: 0.98;
+      letter-spacing: -0.065em;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .glass {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+    }
+
+    .glass::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), transparent 38%);
+      pointer-events: none;
+      opacity: 0.36;
+    }
+
+    .about-card {
+      padding: 28px;
+    }
+
+    .about-card p {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      font-size: clamp(17px, 1.5vw, 18px);
+      line-height: 1.85;
+      margin: 0 0 18px;
+    }
+
+    .about-card p:last-child { margin-bottom: 0; }
+    .about-card strong { color: var(--text); }
+
+    .orbital-card {
+      min-height: 390px;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .orbit {
+      position: relative;
+      width: min(440px, 100%);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 1px dashed var(--orbit-line);
+      border-radius: 50%;
+      animation: rotate 28s linear infinite;
+    }
+
+    .orbit::after {
+      inset: 27%;
+      animation-duration: 18s;
+      animation-direction: reverse;
+    }
+
+    @keyframes rotate { to { transform: rotate(360deg); } }
+
+    .core {
+      width: 150px;
+      height: 150px;
+      border-radius: 42px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+      font-weight: 900;
+      letter-spacing: -0.045em;
+      color: #06111f;
+      background: linear-gradient(135deg, #43e8ff, #a779ff 58%, #ff5ad9);
+      box-shadow: 0 0 60px rgba(167,121,255,0.42);
+      transform: rotate(-8deg);
+    }
+
+    .node {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 120px;
+      height: 108px;
+      border-radius: 30px;
+      text-align: center;
+      padding: 12px;
+      background: var(--card-strong);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(16px);
+      font-size: 13px;
+      line-height: 1.18;
+      font-weight: 850;
+      color: var(--text);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+    }
+
+    .node:nth-child(2) { top: 5%; left: 50%; transform: translateX(-50%); }
+    .node:nth-child(3) { top: 36%; right: 0; }
+    .node:nth-child(4) { bottom: 5%; left: 50%; transform: translateX(-50%); }
+    .node:nth-child(5) { top: 36%; left: 0; }
+
+    .papers-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .paper-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      min-height: auto;
+      padding: 22px 24px;
+      border-radius: var(--radius-lg);
+      background: var(--card);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+
+    .paper-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(67,232,255,0.42);
+      background: var(--card-strong);
+    }
+
+    .paper-card::before {
+      content: "";
+      position: absolute;
+      width: 270px;
+      height: 270px;
+      right: -123px;
+      top: -123px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(67,232,255,0.35), transparent 68%);
+      transition: transform .25s ease;
+    }
+
+    .paper-card:nth-child(5n+2)::before { background: radial-gradient(circle, rgba(167,121,255,0.35), transparent 68%); }
+    .paper-card:nth-child(5n+3)::before { background: radial-gradient(circle, rgba(255,90,217,0.32), transparent 68%); }
+    .paper-card:nth-child(5n+4)::before { background: radial-gradient(circle, rgba(138,255,193,0.28), transparent 68%); }
+    .paper-card:nth-child(5n)::before { background: radial-gradient(circle, rgba(255,211,110,0.28), transparent 68%); }
+
+    .paper-card:hover::before { transform: scale(1.22); }
+
+    .paper-meta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .venue {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 11px;
+      border-radius: 999px;
+      background: rgba(67,232,255,0.11);
+      color: var(--cyan);
+      border: 1px solid rgba(67,232,255,0.25);
+      font-weight: 900;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .paper-year {
+      color: var(--muted-2);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .paper-card h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.18;
+      letter-spacing: -0.045em;
+    }
+
+    .paper-card p {
+      position: relative;
+      z-index: 1;
+      color: var(--muted);
+      line-height: 1.62;
+      margin: 0;
+    }
+
+    .paper-card p.paper-highlight {
+      margin-top: -7px;
+      line-height: 1.45;
+    }
+
+    .paper-note {
+      color: var(--muted-2);
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 14px 0 0;
+    }
+
+    .paper-links {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .mini-link {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 850;
+      padding: 9px 11px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      transition: 0.2s ease;
+    }
+
+    .mini-link:hover {
+      border-color: rgba(255,255,255,0.35);
+      background: var(--card-strong);
+      transform: translateY(-2px);
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      gap: 15px;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 21px;
+      top: 14px;
+      bottom: 14px;
+      width: 2px;
+      background: linear-gradient(var(--cyan), var(--violet), var(--pink));
+      opacity: 0.65;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 20px 20px 20px 62px;
+      border-radius: 24px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      backdrop-filter: blur(18px);
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .timeline-item:hover {
+      transform: translateX(7px);
+      border-color: rgba(167,121,255,0.45);
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 12px;
+      top: 24px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      border: 4px solid var(--bg-2);
+      box-shadow: 0 0 24px rgba(67,232,255,0.35);
+      z-index: 2;
+    }
+
+    .timeline-item h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      letter-spacing: -0.035em;
+    }
+
+    .timeline-item p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.62;
+    }
+
+    .date {
+      display: inline-block;
+      margin-bottom: 10px;
+      color: var(--yellow);
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+      font-size: 13.5px;
+    }
+
+    .awards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .award {
+      padding: 18px;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .award strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .footer {
+      padding: 52px 0 46px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .socials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .socials a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 15px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 900;
+      line-height: 1;
+      white-space: nowrap;
+      transition: .2s ease;
+    }
+
+    .socials a:hover {
+      transform: translateY(-3px) rotate(-4deg);
+      border-color: rgba(67,232,255,0.5);
+      box-shadow: 0 14px 28px rgba(67,232,255,0.12);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .7s ease, transform .7s ease;
+      transition-delay: var(--reveal-delay, 0s);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 940px) {
+      .hero,
+      .research-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero { padding-top: 56px; }
+      .hero-card { max-width: 560px; justify-self: center; }
+      .awards { grid-template-columns: repeat(2, 1fr); }
+      .papers-grid { grid-template-columns: 1fr; }
+      .section-head { align-items: start; flex-direction: column; }
+      .node { width: 108px; height: 96px; border-radius: 26px; font-size: 12px; }
+      .core { width: 136px; height: 136px; border-radius: 38px; }
+    }
+
+    @media (max-width: 680px) {
+      .container { width: min(var(--max), calc(100% - 24px)); }
+      .nav-wrap { top: 8px; margin-top: 8px; }
+      nav { border-radius: 24px; gap: 10px; position: relative; }
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        min-width: 190px;
+        padding: 8px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: var(--menu-bg);
+        backdrop-filter: blur(22px);
+        box-shadow: var(--shadow);
+        transform-origin: top right;
+        transform: scale(0.92) translateY(-8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.22s ease, opacity 0.22s ease, visibility 0.22s;
+      }
+      .nav-links.open {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      .nav-links a {
+        font-size: 15px;
+        padding: 11px 14px;
+        border-radius: 14px;
+      }
+      h1 { letter-spacing: -0.07em; }
+      .hero { padding: 42px 0 42px; }
+      .floating-chip { display: none; }
+      .status-card { left: 16px; right: 16px; bottom: 16px; }
+      .awards { grid-template-columns: 1fr; }
+      .orbital-card { min-height: 330px; }
+      .node { width: 104px; height: 92px; border-radius: 24px; font-size: 12px; }
+      .core { width: 126px; height: 126px; border-radius: 34px; }
+      .timeline::before { left: 17px; }
+      .timeline-item { padding-left: 52px; }
+      .timeline-dot { left: 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress" id="progress"></div>
+  <div class="noise"></div>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
+  <div class="orb three"></div>
+
+  <div class="container nav-wrap">
+    <nav aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Yanqi Dai homepage">
+        <span class="brand-mark">YD</span>
+        <span>Yanqi Dai</span>
+      </a>
+      <div class="nav-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#papers">Papers</a>
+        <a href="#experience">Experience</a>
+        <a href="#awards">Awards</a>
+      </div>
+      <div class="nav-actions">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle color theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.2"></circle>
+            <path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+          </svg>
+        </button>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero container" id="top">
+    <div class="hero-copy reveal">
+      <h1><span class="gradient-text">Yanqi Dai</span><br>代彦琪</h1>
+      <p class="hero-lead">
+        Expected to graduate in <strong>June 2027</strong>, I am seeking industry positions focused on foundation models, including LLMs, VLMs, and UMMs. Feel free to reach out if you have relevant opportunities or insights to share.
+      </p>
+      <div class="cta-row">
+        <a class="btn" href="https://scholar.google.com/citations?user=bvuNVL8AAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>
+        <a class="btn" href="mailto:yanqidai@ruc.edu.cn">Email</a>
+        <a class="btn" href="https://github.com/YanqiDai" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="btn" href="https://huggingface.co/YanqiDai" target="_blank" rel="noreferrer">Hugging Face</a>
+        <a class="btn" href="https://www.linkedin.com/in/yanqi-dai-5475a01a7" target="_blank" rel="noreferrer">LinkedIn</a>
+        <a class="btn" href="https://www.xiaohongshu.com/user/profile/5ba9eeb265f0230001b86ede" target="_blank" rel="noreferrer">Xiaohongshu</a>
+        <a class="btn primary" href="#papers">Explore papers <span aria-hidden="true">↘</span></a>
+      </div>
+    </div>
+
+    <aside class="hero-card reveal" aria-label="Profile card">
+      <span class="floating-chip chip-a">Large Multimodal Models</span>
+      <span class="floating-chip chip-b">RL for Reasoning</span>
+      <span class="floating-chip chip-c">Multi-Task Learning</span>
+      <div class="portrait-wrap">
+        <img src="https://yanqidai.github.io/images/yanqidai.png" alt="Yanqi Dai portrait" fetchpriority="high" decoding="async" onerror="this.style.display='none'" />
+        <div class="status-card">
+          <h2>Ph.D. Candidate in AI</h2>
+          <p>Gaoling School of Artificial Intelligence<br>Renmin University of China</p>
+        </div>
+      </div>
+    </aside>
+  </header>
+
+  <main>
+    <section id="about" class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">About me</div>
+          <h2 class="section-title">Capable and versatile multimodal intelligence.</h2>
+        </div>
+      </div>
+
+      <div class="research-grid">
+        <article class="glass about-card reveal">
+          <p>
+            I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, advised by Prof. Zhiwu Lu. I was a visiting student in the College of Computing and Data Science at Nanyang Technological University, advised by Prof. Hanwang Zhang. Before my doctoral studies, I received my B.E. from the School of Software at Dalian University of Technology.
+          </p>
+          <p>
+            My research interests lie in <strong>large multimodal models</strong>, <strong>reinforcement learning for reasoning</strong>, and <strong>multi-task learning</strong>. Through my research, I aim to develop more capable and versatile large multimodal models.
+          </p>
+        </article>
+
+        <article class="glass orbital-card reveal" aria-label="Research map">
+          <div class="orbit">
+            <div class="core">Large<br>Multimodal<br>Models</div>
+            <div class="node">Data &amp; Task Balancing</div>
+            <div class="node">RL for Reasoning</div>
+            <div class="node">Multimodal Role&#8209;Playing Agents</div>
+            <div class="node">Visual Instruction Tuning</div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="papers" class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">Selected papers</div>
+          <h2 class="section-title">Research highlights.</h2>
+        </div>
+      </div>
+
+      <div class="papers-grid">
+        <article class="paper-card reveal">
+          <div class="paper-meta"><span class="venue">ICLR 2026</span><span class="paper-year">MathForge</span></div>
+          <h3>Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation</h3>
+          <p>Yanqi Dai, Yuxiang Ji, Xiao Zhang, Yong Wang*, Xiangxiang Chu, Zhiwu Lu*</p>
+          <p class="paper-highlight"><strong>Hugging Face Daily Papers #2 of the day.</strong></p>
+          <div class="paper-links"><a class="mini-link" href="https://openreview.net/pdf?id=nfURupkdRJ" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/AMAP-ML/MathForge" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented" target="_blank" rel="noreferrer">Data</a><a class="mini-link" href="https://mp.weixin.qq.com/s/ilHVq-lbdWnzDgWAw3xNHQ" target="_blank" rel="noreferrer">News</a></div>
+        </article>
+
+        <article class="paper-card reveal">
+          <div class="paper-meta"><span class="venue">WWW 2026 · Oral</span><span class="paper-year">VisATB</span></div>
+          <h3>Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty</h3>
+          <p>Yanqi Dai, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu*</p>
+          <div class="paper-links"><a class="mini-link" href="https://dl.acm.org/doi/epdf/10.1145/3774904.3792371" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/VisATB" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://mp.weixin.qq.com/s/Daz8KaCvQ44XPp4R_Wqf-A" target="_blank" rel="noreferrer">News</a></div>
+        </article>
+
+        <article class="paper-card reveal">
+          <div class="paper-meta"><span class="venue">ICLR 2025</span><span class="paper-year">MMRole</span></div>
+          <h3>MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents</h3>
+          <p>Yanqi Dai, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen*, Zhiwu Lu*</p>
+          <div class="paper-links"><a class="mini-link" href="https://openreview.net/pdf?id=FGSgsefE0Y" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/MMRole" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://huggingface.co/datasets/YanqiDai/MMRole_dataset" target="_blank" rel="noreferrer">Data</a><a class="mini-link" href="https://mp.weixin.qq.com/s/I8gyDv9K8uhB3EXF_2_zVw" target="_blank" rel="noreferrer">News</a></div>
+        </article>
+
+        <article class="paper-card reveal">
+          <div class="paper-meta"><span class="venue">Technical Report</span><span class="paper-year">Awaker2.5-VL</span></div>
+          <h3>Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts</h3>
+          <p>Jinqiang Long†, Yanqi Dai†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu</p>
+          <div class="paper-links"><a class="mini-link" href="https://arxiv.org/abs/2411.10669" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/MetabrainAGI/Awaker2.5-VL" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://mp.weixin.qq.com/s/R-D1QKht61YETfBep10nAQ" target="_blank" rel="noreferrer">News</a></div>
+        </article>
+
+        <article class="paper-card reveal">
+          <div class="paper-meta"><span class="venue">UAI 2023</span><span class="paper-year">IGB</span></div>
+          <h3>Improvable Gap Balancing for Multi-Task Learning</h3>
+          <p>Yanqi Dai, Nanyi Fei, Zhiwu Lu*</p>
+          <div class="paper-links"><a class="mini-link" href="https://proceedings.mlr.press/v216/dai23a/dai23a.pdf" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/IGB4MTL" target="_blank" rel="noreferrer">Code</a></div>
+        </article>
+      </div>
+      <p class="paper-note reveal">† Equal contribution. * Corresponding author.</p>
+    </section>
+
+    <section id="experience" class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">Experience</div>
+          <h2 class="section-title">From research labs to foundation-model teams.</h2>
+        </div>
+      </div>
+
+      <div class="timeline reveal">
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <span class="date">May 2026 — Present · Beijing</span>
+          <h3>Algorithm Intern, VLM Pretrain Team in Base Group · Zhipu AI</h3>
+          <p>Mentors: Zhengxiao Du, Weihan Wang.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <span class="date">Mar 2025 — Sep 2025 · Beijing</span>
+          <h3>Research Intern, Machine Learning Team · Amap-Alibaba Group</h3>
+          <p>Mentor: Yong Wang.</p>
+        </div>
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <span class="date">Jun 2023 — Feb 2025 · Beijing</span>
+          <h3>Algorithm Intern, Model Team · Metabrain AGI</h3>
+          <p>Mentor: Zhiwu Lu.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="awards" class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="section-kicker">Selected honors & awards</div>
+          <h2 class="section-title">Recognition.</h2>
+        </div>
+      </div>
+
+      <div class="awards reveal">
+        <div class="award"><strong>Excellent Scholarship for Postgraduate Study</strong>Renmin University of China · 2025</div>
+        <div class="award"><strong>Excellent Scholarship for Postgraduate Study</strong>Renmin University of China · 2023</div>
+        <div class="award"><strong>Scientific Research Fund</strong>Renmin University of China · 2023</div>
+        <div class="award"><strong>First-Class Academic Scholarship for Postgraduate Study</strong>Renmin University of China · 2023</div>
+        <div class="award"><strong>Outstanding Graduate</strong>Liaoning Province · 2022</div>
+        <div class="award"><strong>Toly Bread Alumni Scholarship</strong>Dalian University of Technology · 2020 / 2019</div>
+        <div class="award"><strong>First Prize National Mathematics Competition for College Students</strong>2019</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>© 2026 Yanqi Dai (代彦琪)</strong>
+      </div>
+      <div class="socials" aria-label="Social links">
+        <a href="https://scholar.google.com/citations?user=bvuNVL8AAAAJ" target="_blank" rel="noreferrer" aria-label="Google Scholar">Google Scholar</a>
+        <a href="mailto:yanqidai@ruc.edu.cn" aria-label="Email yanqidai@ruc.edu.cn">Email</a>
+        <a href="https://github.com/YanqiDai" target="_blank" rel="noreferrer" aria-label="GitHub">GitHub</a>
+        <a href="https://huggingface.co/YanqiDai" target="_blank" rel="noreferrer" aria-label="Hugging Face">Hugging Face</a>
+        <a href="https://www.linkedin.com/in/yanqi-dai-5475a01a7" target="_blank" rel="noreferrer" aria-label="LinkedIn">LinkedIn</a>
+        <a href="https://www.xiaohongshu.com/user/profile/5ba9eeb265f0230001b86ede" target="_blank" rel="noreferrer" aria-label="Xiaohongshu">Xiaohongshu</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme toggle with persistence.
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+    });
+
+    const progress = document.getElementById('progress');
+    const updateProgress = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+      progress.style.width = pct + '%';
+    };
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    // Mobile nav toggle.
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    const setNav = (open) => {
+      navLinks.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    navToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setNav(!navLinks.classList.contains('open'));
+    });
+    navLinks.addEventListener('click', (e) => {
+      if (e.target.closest('a')) setNav(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (navLinks.classList.contains('open') && !e.target.closest('nav')) setNav(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setNav(false);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    // Stagger reveals that share a parent so grouped cards fade in sequentially.
+    document.querySelectorAll('.papers-grid, .awards, .timeline').forEach((group) => {
+      [...group.children].forEach((child, i) => {
+        if (child.classList.contains('reveal')) {
+          child.style.setProperty('--reveal-delay', (i * 0.08) + 's');
+        }
+      });
+    });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // Scroll-spy: highlight the nav link for the section currently in view.
+    const navAnchors = [...navLinks.querySelectorAll('a')];
+    const sectionFor = (a) => document.querySelector(a.getAttribute('href'));
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        navAnchors.forEach((a) => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+
+    navAnchors.map(sectionFor).filter(Boolean).forEach((sec) => spy.observe(sec));
+
+  </script>
+</body>
+</html>
