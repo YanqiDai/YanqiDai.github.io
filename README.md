@@ -37,6 +37,7 @@ awards:
 - `email`：联系邮箱
 - `description`：搜索引擎和分享卡片使用的简介
 - `image`：头像路径
+- `background_image`：页面背景图片路径
 - `footer_year`：页脚年份
 - `hero_intro`：首页顶部简介
 - `role`、`affiliation`：当前身份和单位
@@ -110,6 +111,16 @@ hero_intro: >-
 ```yaml
 image: "/images/new-profile.jpg"
 ```
+
+### 更换背景图
+
+当前背景图位于 `images/mountain-background.jpg`。建议使用宽度约 2000 像素的横向 JPEG 图片，并在上传前进行压缩。更换文件后修改：
+
+```yaml
+background_image: "/images/your-background.jpg"
+```
+
+页面会自动添加深色或浅色遮罩，以保证文字可读性。桌面端背景会随鼠标产生轻微视差和追光效果；触摸设备或开启“减少动态效果”的设备会自动使用静态背景。
 
 ## 编辑时的注意事项
 
