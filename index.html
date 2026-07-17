@@ -11,8 +11,9 @@ profile:
   initials: "YD"
   email: "yanqidai@ruc.edu.cn"
   description: "AI Ph.D. Candidate working on LMMs, RL for reasoning, and MTL."
-  image: "/images/yanqidai.png"
+  image: "/images/yanqidai.jpg"
   background_image: "/images/mountain-background.jpg"
+  background_image_mobile: "/images/mountain-background-mobile.jpg"
   footer_year: "2026"
 
   hero_intro: >-
@@ -212,15 +213,13 @@ awards:
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" as="image" href="{{ profile.background_image | relative_url }}">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <script>
-    // Apply saved/system theme before first paint to avoid a flash.
+    // First visit defaults to dark; later visits use the saved user choice.
     (function () {
       try {
         var saved = localStorage.getItem('theme');
-        var prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
-        var theme = saved || (prefersLight ? 'light' : 'dark');
+        var theme = saved === 'light' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
       } catch (e) {
         document.documentElement.setAttribute('data-theme', 'dark');
@@ -252,7 +251,6 @@ awards:
       --bg-shift-x: 0px;
       --bg-shift-y: 0px;
       --photo-opacity: 0.76;
-      --photo-filter: grayscale(0.16) saturate(0.76) contrast(1.08) brightness(0.68);
       --photo-veil:
         radial-gradient(circle at 50% 28%, rgba(6, 9, 20, 0.08), rgba(6, 9, 20, 0.55) 68%),
         linear-gradient(180deg, rgba(6, 9, 20, 0.40), rgba(6, 9, 20, 0.66) 52%, rgba(6, 9, 20, 0.92));
@@ -287,7 +285,6 @@ awards:
       --shadow: 0 26px 70px rgba(40, 60, 120, 0.16);
 
       --photo-opacity: 0.64;
-      --photo-filter: grayscale(0.20) saturate(0.72) contrast(0.97) brightness(1.02);
       --photo-veil:
         radial-gradient(circle at 50% 26%, rgba(238, 241, 249, 0.24), rgba(238, 241, 249, 0.60) 66%),
         linear-gradient(180deg, rgba(238, 241, 249, 0.40), rgba(238, 241, 249, 0.68) 56%, rgba(238, 241, 249, 0.92));
@@ -332,16 +329,22 @@ awards:
     .background-photo {
       inset: -30px;
       z-index: -7;
-      background-image: url("{{ profile.background_image | relative_url }}");
-      background-size: cover;
-      background-position: center 48%;
-      background-repeat: no-repeat;
       opacity: var(--photo-opacity);
-      filter: var(--photo-filter);
       transform: translate3d(var(--bg-shift-x), var(--bg-shift-y), 0) scale(1.055);
       transform-origin: center;
       will-change: transform;
-      transition: opacity .35s ease, filter .35s ease;
+      transition: opacity .35s ease;
+    }
+
+    .background-photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .background-photo img {
+      object-fit: cover;
+      object-position: center 48%;
     }
 
     .background-veil {
@@ -364,15 +367,6 @@ awards:
       z-index: -4;
     }
 
-    .noise {
-      pointer-events: none;
-      position: fixed;
-      inset: 0;
-      opacity: 0.075;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      z-index: -3;
-    }
-
     .orb {
       position: fixed;
       width: 42vw;
@@ -381,18 +375,12 @@ awards:
       filter: blur(70px);
       opacity: var(--orb-opacity);
       pointer-events: none;
-      animation: floatOrb 14s ease-in-out infinite alternate;
       z-index: -2;
     }
 
     .orb.one { left: -12vw; top: 5vh; background: var(--cyan); }
-    .orb.two { right: -18vw; top: 38vh; background: var(--violet); animation-delay: -4s; }
-    .orb.three { left: 30vw; bottom: -24vw; background: var(--pink); animation-delay: -8s; }
-
-    @keyframes floatOrb {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(6vw, -4vh, 0) scale(1.12); }
-    }
+    .orb.two { right: -18vw; top: 38vh; background: var(--violet); }
+    .orb.three { left: 30vw; bottom: -24vw; background: var(--pink); }
 
     .progress {
       position: fixed;
@@ -798,6 +786,11 @@ awards:
     }
 
     section { padding: 72px 0; }
+
+    main > section {
+      content-visibility: auto;
+      contain-intrinsic-size: auto 800px;
+    }
 
     .section-head {
       display: flex;
@@ -1263,10 +1256,10 @@ awards:
     @media (max-width: 680px) {
       .background-photo {
         inset: -14px;
-        background-position: 50% 46%;
         transform: scale(1.035);
         will-change: auto;
       }
+      .background-photo img { object-position: 50% 46%; }
       .container { width: min(var(--max), calc(100% - 24px)); }
       .nav-wrap { top: 8px; margin-top: 8px; }
       nav { border-radius: 24px; gap: 10px; position: relative; }
@@ -1329,10 +1322,30 @@ awards:
   </style>
 </head>
 <body>
-  <div class="background-photo" aria-hidden="true"></div>
+  <div class="background-photo" aria-hidden="true">
+    <img
+      id="backgroundPhotoImage"
+      data-desktop-src="{{ profile.background_image | relative_url }}"
+      data-mobile-src="{{ profile.background_image_mobile | relative_url }}"
+      alt=""
+      fetchpriority="high"
+      decoding="async"
+    >
+  </div>
+  <script>
+    (function () {
+      var image = document.getElementById('backgroundPhotoImage');
+      var mobileBackground = window.matchMedia('(max-width: 680px)');
+      var selectBackground = function () {
+        var source = mobileBackground.matches ? image.dataset.mobileSrc : image.dataset.desktopSrc;
+        if (image.getAttribute('src') !== source) image.setAttribute('src', source);
+      };
+      selectBackground();
+      if (mobileBackground.addEventListener) mobileBackground.addEventListener('change', selectBackground);
+    })();
+  </script>
   <div class="background-veil" aria-hidden="true"></div>
   <div class="progress" id="progress"></div>
-  <div class="noise"></div>
   <div class="orb one"></div>
   <div class="orb two"></div>
   <div class="orb three"></div>
