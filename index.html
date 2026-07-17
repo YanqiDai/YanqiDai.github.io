@@ -249,8 +249,6 @@ awards:
       --max: 1180px;
 
       /* photographic background */
-      --pointer-x: 50%;
-      --pointer-y: 34%;
       --bg-shift-x: 0px;
       --bg-shift-y: 0px;
       --photo-opacity: 0.76;
@@ -258,9 +256,6 @@ awards:
       --photo-veil:
         radial-gradient(circle at 50% 28%, rgba(6, 9, 20, 0.08), rgba(6, 9, 20, 0.55) 68%),
         linear-gradient(180deg, rgba(6, 9, 20, 0.40), rgba(6, 9, 20, 0.66) 52%, rgba(6, 9, 20, 0.92));
-      --pointer-light: rgba(67, 232, 255, 0.15);
-      --pointer-sheen: rgba(255, 255, 255, 0.075);
-      --pointer-blend: screen;
 
       /* themeable surfaces */
       --grad-edge: #ffffff;
@@ -296,9 +291,6 @@ awards:
       --photo-veil:
         radial-gradient(circle at 50% 26%, rgba(238, 241, 249, 0.24), rgba(238, 241, 249, 0.60) 66%),
         linear-gradient(180deg, rgba(238, 241, 249, 0.40), rgba(238, 241, 249, 0.68) 56%, rgba(238, 241, 249, 0.92));
-      --pointer-light: rgba(11, 159, 196, 0.10);
-      --pointer-sheen: rgba(255, 255, 255, 0.16);
-      --pointer-blend: soft-light;
 
       --grad-edge: #0e1428;
       --grid-line: rgba(13, 20, 40, 0.05);
@@ -332,8 +324,7 @@ awards:
     }
 
     .background-photo,
-    .background-veil,
-    .pointer-light {
+    .background-veil {
       position: fixed;
       pointer-events: none;
     }
@@ -358,15 +349,6 @@ awards:
       z-index: -6;
       background: var(--photo-veil);
       transition: background .35s ease;
-    }
-
-    .pointer-light {
-      inset: 0;
-      z-index: -5;
-      background:
-        radial-gradient(circle 13rem at var(--pointer-x) var(--pointer-y), var(--pointer-sheen), transparent 72%),
-        radial-gradient(circle 34rem at var(--pointer-x) var(--pointer-y), var(--pointer-light), transparent 70%);
-      mix-blend-mode: var(--pointer-blend);
     }
 
     body::before {
@@ -1325,7 +1307,6 @@ awards:
         transform: scale(1.035) !important;
         will-change: auto;
       }
-      .pointer-light { display: none; }
       *, *::before, *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
@@ -1338,7 +1319,6 @@ awards:
 <body>
   <div class="background-photo" aria-hidden="true"></div>
   <div class="background-veil" aria-hidden="true"></div>
-  <div class="pointer-light" aria-hidden="true"></div>
   <div class="progress" id="progress"></div>
   <div class="noise"></div>
   <div class="orb one"></div>
@@ -1515,7 +1495,7 @@ awards:
   </footer>
 
   <script>
-    // Subtle pointer-following light and photo parallax for fine-pointer devices.
+    // Subtle photo parallax for fine-pointer devices.
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const finePointer = window.matchMedia('(pointer: fine)');
 
@@ -1531,8 +1511,6 @@ awards:
         currentX += (targetX - currentX) * 0.075;
         currentY += (targetY - currentY) * 0.075;
 
-        rootStyle.setProperty('--pointer-x', (currentX * 100).toFixed(2) + '%');
-        rootStyle.setProperty('--pointer-y', (currentY * 100).toFixed(2) + '%');
         rootStyle.setProperty('--bg-shift-x', ((currentX - 0.5) * -18).toFixed(2) + 'px');
         rootStyle.setProperty('--bg-shift-y', ((currentY - 0.5) * -12).toFixed(2) + 'px');
 
