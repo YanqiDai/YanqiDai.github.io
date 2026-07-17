@@ -45,7 +45,7 @@ awards:
 - `about`：详细自我介绍和研究方向图
 - `social_links`：Google Scholar、GitHub 等外部链接
 
-`research_chips` 和 `about.map_nodes` 都支持任意数量，页面会自动换行和扩展，不需要增加 CSS 定位样式。
+`research_chips` 和 `about.map_nodes` 都支持可变数量。前者会自动分布在头像左右两侧，后者会围绕中央研究主题排列；增加条目时，间距和卡片大小会自动调整，使布局逐渐变得更密集。
 
 `hero_intro` 和 `about.paragraphs` 中可以使用简单 HTML，例如：
 

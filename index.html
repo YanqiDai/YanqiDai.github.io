@@ -749,21 +749,20 @@ awards:
     }
 
     .research-chips {
-      position: relative;
+      position: absolute;
+      inset: 28px 0 158px;
       z-index: 3;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      padding: 2px 2px 0;
+      pointer-events: none;
+      --chip-scale: 1;
     }
 
     .research-chip {
+      position: absolute;
+      top: var(--chip-y, 50%);
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      flex: 0 1 auto;
-      max-width: 100%;
+      max-width: min(190px, 44%);
       min-height: 38px;
       padding: 10px 13px;
       border-radius: 999px;
@@ -778,11 +777,22 @@ awards:
       line-height: 1.25;
       text-align: center;
       overflow-wrap: anywhere;
+      pointer-events: auto;
+      transform: translateY(-50%) scale(var(--chip-scale));
       transition: transform .2s ease, border-color .2s ease, background .2s ease;
     }
 
+    .research-chip.chip-left {
+      left: 0;
+      transform-origin: left center;
+    }
+
+    .research-chip.chip-right {
+      right: 0;
+      transform-origin: right center;
+    }
+
     .research-chip:hover {
-      transform: translateY(-3px);
       border-color: rgba(67,232,255,0.65);
       background: rgba(255,255,255,0.74);
     }
@@ -860,29 +870,27 @@ awards:
       min-height: 390px;
       display: grid;
       place-items: center;
-      padding: 28px;
+      padding: 20px;
     }
 
     .orbit {
       position: relative;
-      width: 100%;
-      min-height: 334px;
+      width: min(440px, 100%);
+      aspect-ratio: 1;
+      border-radius: 50%;
       display: grid;
-      align-content: center;
-      justify-items: center;
-      gap: 26px;
+      place-items: center;
       isolation: isolate;
+      container-type: inline-size;
+      --node-radius: 35cqw;
+      --node-scale: 1;
     }
 
     .orbit::before,
     .orbit::after {
       content: "";
       position: absolute;
-      top: 0;
-      left: 50%;
-      width: min(280px, 72%);
-      aspect-ratio: 1;
-      translate: -50% 0;
+      inset: 12%;
       border: 1px dashed var(--orbit-line);
       border-radius: 50%;
       animation: rotate 28s linear infinite;
@@ -891,8 +899,7 @@ awards:
     }
 
     .orbit::after {
-      top: 42px;
-      width: min(196px, 52%);
+      inset: 27%;
       animation-duration: 18s;
       animation-direction: reverse;
     }
@@ -900,52 +907,58 @@ awards:
     @keyframes rotate { to { transform: rotate(360deg); } }
 
     .core {
-      position: relative;
       z-index: 1;
-      width: 140px;
-      height: 140px;
+      width: 34cqw;
+      height: 34cqw;
       border-radius: 28%;
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 16px;
+      padding: 4cqw;
       font-weight: 900;
       letter-spacing: -0.045em;
       color: #06111f;
       background: linear-gradient(135deg, #43e8ff, #a779ff 58%, #ff5ad9);
       box-shadow: 0 0 60px rgba(167,121,255,0.42);
       transform: rotate(-8deg);
-      font-size: 16px;
+      font-size: clamp(12px, 3.6cqw, 17px);
       line-height: 1.1;
     }
 
     .orbit-nodes {
-      position: relative;
+      position: absolute;
+      inset: 0;
       z-index: 1;
-      width: 100%;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 12px;
+      pointer-events: none;
     }
 
     .node {
-      position: relative;
+      position: absolute;
+      left: 50%;
+      top: 50%;
       display: grid;
       place-items: center;
-      width: 100%;
-      min-height: 82px;
-      border-radius: 20px;
+      width: 27cqw;
+      height: 24cqw;
+      border-radius: 22%;
       text-align: center;
-      padding: 14px;
+      padding: 2.5cqw;
       background: var(--card-strong);
       border: 1px solid var(--line);
       backdrop-filter: blur(16px);
-      font-size: 13px;
+      font-size: clamp(10px, 2.9cqw, 13px);
       line-height: 1.18;
       font-weight: 850;
       color: var(--text);
       box-shadow: 0 18px 48px rgba(0,0,0,0.22);
       overflow-wrap: anywhere;
+      pointer-events: auto;
+      transform:
+        translate(-50%, -50%)
+        rotate(var(--node-angle, -90deg))
+        translateX(var(--node-radius))
+        rotate(var(--node-angle-inverse, 90deg))
+        scale(var(--node-scale));
     }
 
     .papers-grid {
@@ -1290,13 +1303,12 @@ awards:
       }
       h1 { letter-spacing: -0.07em; }
       .hero { padding: 42px 0 42px; }
-      .research-chips { gap: 7px; }
-      .research-chip { min-height: 34px; padding: 8px 11px; font-size: 11px; }
+      .research-chips { inset: 18px 0 132px; }
+      .research-chip { max-width: min(145px, 46%); min-height: 32px; padding: 7px 9px; font-size: 10px; }
       .status-card { left: 16px; right: 16px; bottom: 16px; }
       .awards { grid-template-columns: 1fr; }
       .orbital-card { min-height: 300px; padding: 22px; }
       .orbit { min-height: 0; }
-      .orbit-nodes { grid-template-columns: 1fr; }
       .timeline::before { left: 17px; }
       .timeline-item { padding-left: 52px; }
       .timeline-dot { left: 8px; }
@@ -1495,6 +1507,56 @@ awards:
   </footer>
 
   <script>
+    // Keep research labels beside the portrait and research nodes around the core.
+    const layoutResearchConstellations = () => {
+      const chipContainer = document.querySelector('.research-chips');
+      if (chipContainer) {
+        const chips = [...chipContainer.querySelectorAll('.research-chip')];
+        const leftChips = chips.filter((_, index) => index % 2 === 0);
+        const rightChips = chips.filter((_, index) => index % 2 === 1);
+        const densestSide = Math.max(leftChips.length, rightChips.length);
+
+        const placeChipSide = (items, side) => {
+          items.forEach((chip, row) => {
+            chip.classList.add('chip-' + side);
+            chip.style.setProperty('--chip-y', (((row + 1) / (items.length + 1)) * 100).toFixed(3) + '%');
+          });
+        };
+
+        placeChipSide(leftChips, 'left');
+        placeChipSide(rightChips, 'right');
+
+        const maxChipHeight = Math.max(...chips.map((chip) => chip.offsetHeight));
+        const verticalStep = chipContainer.clientHeight / (densestSide + 1);
+        const densityScale = 1 - Math.max(0, densestSide - 3) * 0.075;
+        const heightFitScale = maxChipHeight > 0 ? (verticalStep * 0.90) / maxChipHeight : 1;
+        const chipScale = Math.max(0.46, Math.min(1, densityScale, heightFitScale));
+        chipContainer.style.setProperty('--chip-scale', chipScale.toFixed(3));
+      }
+
+      document.querySelectorAll('.orbit-nodes').forEach((nodeContainer) => {
+        const nodes = [...nodeContainer.querySelectorAll('.node')];
+        const count = nodes.length;
+        if (!count) return;
+
+        const orbit = nodeContainer.closest('.orbit');
+        const nodeScale = Math.max(0.48, 1 - Math.max(0, count - 4) * 0.055);
+        const nodeRadius = count <= 4 ? 35 : count <= 8 ? 38 : count <= 12 ? 40 : 42;
+        orbit.style.setProperty('--node-scale', nodeScale.toFixed(3));
+        orbit.style.setProperty('--node-radius', nodeRadius + 'cqw');
+
+        nodes.forEach((node, index) => {
+          const angle = -90 + (360 * index / count);
+          node.style.setProperty('--node-angle', angle.toFixed(3) + 'deg');
+          node.style.setProperty('--node-angle-inverse', (-angle).toFixed(3) + 'deg');
+        });
+      });
+    };
+
+    layoutResearchConstellations();
+    window.addEventListener('load', layoutResearchConstellations);
+    window.addEventListener('resize', layoutResearchConstellations, { passive: true });
+
     // Subtle photo parallax for fine-pointer devices.
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const finePointer = window.matchMedia('(pointer: fine)');
