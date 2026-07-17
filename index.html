@@ -626,6 +626,8 @@ awards:
 
     .hero-card {
       position: relative;
+      display: grid;
+      gap: 12px;
       padding: 18px;
       border-radius: var(--radius-xl);
       background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.045));
@@ -703,14 +705,23 @@ awards:
       font-size: 14px;
     }
 
-    .floating-chip {
-      position: absolute;
+    .research-chips {
+      position: relative;
       z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      padding: 2px 2px 0;
+    }
+
+    .research-chip {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      max-width: 210px;
+      flex: 0 1 auto;
+      max-width: 100%;
+      min-height: 38px;
       padding: 10px 13px;
       border-radius: 999px;
       background: rgba(245, 250, 255, 0.54);
@@ -723,16 +734,14 @@ awards:
       font-size: 12px;
       line-height: 1.25;
       text-align: center;
-      animation: chipFloat 4.5s ease-in-out infinite alternate;
+      overflow-wrap: anywhere;
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
     }
 
-    .chip-a { top: 40px; left: 0; }
-    .chip-b { top: 126px; right: 0; animation-delay: -2s; }
-    .chip-c { bottom: 170px; left: 0; animation-delay: -3s; }
-
-    @keyframes chipFloat {
-      from { transform: translateY(0); }
-      to { transform: translateY(-13px); }
+    .research-chip:hover {
+      transform: translateY(-3px);
+      border-color: rgba(67,232,255,0.65);
+      background: rgba(255,255,255,0.74);
     }
 
     section { padding: 72px 0; }
@@ -808,32 +817,39 @@ awards:
       min-height: 390px;
       display: grid;
       place-items: center;
-      padding: 20px;
+      padding: 28px;
     }
 
     .orbit {
       position: relative;
-      width: min(440px, 100%);
-      aspect-ratio: 1;
-      border-radius: 50%;
+      width: 100%;
+      min-height: 334px;
       display: grid;
-      place-items: center;
+      align-content: center;
+      justify-items: center;
+      gap: 26px;
       isolation: isolate;
-      container-type: inline-size;
     }
 
     .orbit::before,
     .orbit::after {
       content: "";
       position: absolute;
-      inset: 12%;
+      top: 0;
+      left: 50%;
+      width: min(280px, 72%);
+      aspect-ratio: 1;
+      translate: -50% 0;
       border: 1px dashed var(--orbit-line);
       border-radius: 50%;
       animation: rotate 28s linear infinite;
+      pointer-events: none;
+      z-index: -1;
     }
 
     .orbit::after {
-      inset: 27%;
+      top: 42px;
+      width: min(196px, 52%);
       animation-duration: 18s;
       animation-direction: reverse;
     }
@@ -841,46 +857,53 @@ awards:
     @keyframes rotate { to { transform: rotate(360deg); } }
 
     .core {
-      width: 34cqw;
-      height: 34cqw;
+      position: relative;
+      z-index: 1;
+      width: 140px;
+      height: 140px;
       border-radius: 28%;
       display: grid;
       place-items: center;
       text-align: center;
-      padding: 4cqw;
+      padding: 16px;
       font-weight: 900;
       letter-spacing: -0.045em;
       color: #06111f;
       background: linear-gradient(135deg, #43e8ff, #a779ff 58%, #ff5ad9);
       box-shadow: 0 0 60px rgba(167,121,255,0.42);
       transform: rotate(-8deg);
-      font-size: clamp(12px, 3.6cqw, 17px);
+      font-size: 16px;
       line-height: 1.1;
     }
 
+    .orbit-nodes {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
     .node {
-      position: absolute;
+      position: relative;
       display: grid;
       place-items: center;
-      width: 27cqw;
-      height: 24cqw;
-      border-radius: 22%;
+      width: 100%;
+      min-height: 82px;
+      border-radius: 20px;
       text-align: center;
-      padding: 2.5cqw;
+      padding: 14px;
       background: var(--card-strong);
       border: 1px solid var(--line);
       backdrop-filter: blur(16px);
-      font-size: clamp(10px, 2.9cqw, 13px);
+      font-size: 13px;
       line-height: 1.18;
       font-weight: 850;
       color: var(--text);
       box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+      overflow-wrap: anywhere;
     }
-
-    .node:nth-child(2) { top: 2%; left: 50%; transform: translateX(-50%); }
-    .node:nth-child(3) { top: 34%; right: 1%; }
-    .node:nth-child(4) { bottom: 2%; left: 50%; transform: translateX(-50%); }
-    .node:nth-child(5) { top: 34%; left: 1%; }
 
     .papers-grid {
       display: grid;
@@ -894,6 +917,7 @@ awards:
       flex-direction: column;
       gap: 16px;
       width: 100%;
+      min-width: 0;
       min-height: auto;
       padding: 22px 24px;
       border-radius: var(--radius-lg);
@@ -968,6 +992,7 @@ awards:
       font-size: 22px;
       line-height: 1.18;
       letter-spacing: -0.045em;
+      overflow-wrap: anywhere;
     }
 
     .paper-card p {
@@ -1036,6 +1061,7 @@ awards:
 
     .timeline-item {
       position: relative;
+      min-width: 0;
       padding: 20px 20px 20px 62px;
       border-radius: 24px;
       background: var(--card);
@@ -1066,6 +1092,7 @@ awards:
       margin: 0 0 8px;
       font-size: 20px;
       letter-spacing: -0.035em;
+      overflow-wrap: anywhere;
     }
 
     .timeline-item p {
@@ -1090,6 +1117,7 @@ awards:
     }
 
     .award {
+      min-width: 0;
       padding: 18px;
       border-radius: 22px;
       border: 1px solid var(--line);
@@ -1097,6 +1125,7 @@ awards:
       backdrop-filter: blur(18px);
       color: var(--muted);
       line-height: 1.55;
+      overflow-wrap: anywhere;
     }
 
     .award strong {
@@ -1212,10 +1241,13 @@ awards:
       }
       h1 { letter-spacing: -0.07em; }
       .hero { padding: 42px 0 42px; }
-      .floating-chip { display: none; }
+      .research-chips { gap: 7px; }
+      .research-chip { min-height: 34px; padding: 8px 11px; font-size: 11px; }
       .status-card { left: 16px; right: 16px; bottom: 16px; }
       .awards { grid-template-columns: 1fr; }
-      .orbital-card { min-height: 300px; }
+      .orbital-card { min-height: 300px; padding: 22px; }
+      .orbit { min-height: 0; }
+      .orbit-nodes { grid-template-columns: 1fr; }
       .timeline::before { left: 17px; }
       .timeline-item { padding-left: 52px; }
       .timeline-dot { left: 8px; }
@@ -1287,9 +1319,6 @@ awards:
     </div>
 
     <aside class="hero-card reveal" aria-label="Profile card">
-      {% for chip in profile.research_chips %}
-        <span class="floating-chip {% cycle 'chip-a', 'chip-b', 'chip-c' %}">{{ chip | escape }}</span>
-      {% endfor %}
       <div class="portrait-wrap">
         <img src="{{ profile.image | relative_url }}" alt="{{ profile.name | escape }} portrait" fetchpriority="high" decoding="async" onerror="this.style.display='none'" />
         <div class="status-card">
@@ -1297,6 +1326,13 @@ awards:
           <p>{% for line in profile.affiliation %}{{ line | escape }}{% unless forloop.last %}<br>{% endunless %}{% endfor %}</p>
         </div>
       </div>
+      {% if profile.research_chips.size > 0 %}
+        <div class="research-chips" aria-label="Research interests">
+          {% for chip in profile.research_chips %}
+            <span class="research-chip">{{ chip | escape }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
     </aside>
   </header>
 
@@ -1319,9 +1355,13 @@ awards:
         <article class="glass orbital-card reveal" aria-label="Research map">
           <div class="orbit">
             <div class="core">{{ profile.about.map_core }}</div>
-            {% for node in profile.about.map_nodes %}
-              <div class="node">{{ node | escape }}</div>
-            {% endfor %}
+            {% if profile.about.map_nodes.size > 0 %}
+              <div class="orbit-nodes">
+                {% for node in profile.about.map_nodes %}
+                  <div class="node">{{ node | escape }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </article>
       </div>
@@ -1448,11 +1488,11 @@ awards:
       });
     }, { threshold: 0.12 });
 
-    // Stagger reveals that share a parent so grouped cards fade in sequentially.
+    // Stagger grouped cards, but cap the delay so large lists appear promptly.
     document.querySelectorAll('.papers-grid, .awards, .timeline').forEach((group) => {
       [...group.children].forEach((child, i) => {
         if (child.classList.contains('reveal')) {
-          child.style.setProperty('--reveal-delay', (i * 0.08) + 's');
+          child.style.setProperty('--reveal-delay', (Math.min(i, 8) * 0.06) + 's');
         }
       });
     });

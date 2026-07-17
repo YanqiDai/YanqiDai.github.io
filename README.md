@@ -44,6 +44,8 @@ awards:
 - `about`：详细自我介绍和研究方向图
 - `social_links`：Google Scholar、GitHub 等外部链接
 
+`research_chips` 和 `about.map_nodes` 都支持任意数量，页面会自动换行和扩展，不需要增加 CSS 定位样式。
+
 `hero_intro` 和 `about.paragraphs` 中可以使用简单 HTML，例如：
 
 ```yaml
@@ -83,6 +85,8 @@ hero_intro: >-
 ```
 
 页面会按照文件中的顺序展示经历。
+
+论文、经历、奖项和社交链接同样支持任意数量。增加条目后，页面会自动增加卡片、行或网格，不需要修改 HTML 模板。
 
 ### 荣誉与奖项
 
