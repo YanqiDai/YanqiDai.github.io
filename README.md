@@ -108,17 +108,52 @@ hero_intro: >-
 
 ### 博客
 
-在 `blogs.items` 中增加、删除或调整顺序：
+#### 修改现有博客
+
+1. 打开对应博客目录中的 `README.md`。
+2. 使用 Markdown 编写或修改正文。
+3. 如需修改主页卡片的标题、日期、简介或顺序，编辑 `_data/homepage.yml` 中的 `blogs.items`。
+4. 提交并推送。
+
+#### 新增一篇博客
+
+1. 新建博客目录，并创建以下两个文件：
+
+```text
+blogs/new-blog/
+  README.md
+  index.html
+```
+
+2. 在 `README.md` 中使用 Markdown 编写正文。
+3. 在 `index.html` 中填写博客信息，并读取同目录的 `README.md`：
+
+```liquid
+---
+layout: blog
+title: "Blog title"
+description: "Blog description"
+sidebar_mark: "AI"
+sidebar_title: "Blog title"
+sidebar_subtitle: "Optional subtitle"
+---
+{% capture blog_markdown %}
+{% include_relative README.md %}
+{% endcapture %}
+{{ blog_markdown | markdownify }}
+```
+
+4. 在 `_data/homepage.yml` 的 `blogs.items` 中添加主页入口：
 
 ```yaml
 - title: "Blog title"
-  date: "2026-08-16"
-  description: "A short introduction shown on the homepage."
-  url: "blogs/leetcode-hot100/index.html"
+  date: "2026-08-17"
+  description: "A short introduction."
+  url: "blogs/new-blog/index.html"
   cta: "Read the blog"
 ```
 
-`date` 使用带引号的 `YYYY-MM-DD` 格式，并会显示在主页博客卡片中。博客仍按 YAML 中的顺序展示，不会自动按日期排序。
+5. 提交并推送。
 
 ## 更换图片
 
@@ -144,19 +179,21 @@ jekyll serve
 http://127.0.0.1:4000
 ```
 
-保存 `_data/homepage.yml` 或 `index.html` 后，Jekyll 会自动重新生成页面。停止预览时按 `Ctrl+C`。
+保存主页数据、博客 `README.md`、页面模板或 Layout 后，Jekyll 会自动重新生成页面。停止预览时按 `Ctrl+C`。
 
 ## 发布到 GitHub Pages
 
 修改完成后提交并推送：
 
 ```bash
-git add _data/homepage.yml index.html README.md images/ blogs/
-git commit -m "Update homepage"
+git add _data/homepage.yml _layouts/ index.html README.md images/ blogs/
+git commit -m "Update site content"
 git push
 ```
 
-推送会触发 GitHub Pages 构建。构建时，Jekyll 自动加载 `_data/homepage.yml`，将数据传给 `index.html` 中的 Liquid 模板，再输出最终静态网页；不需要手动运行生成脚本。
+推送会触发 GitHub Pages 构建。构建时，Jekyll 会加载
+`_data/homepage.yml` 生成主页，并读取各博客的 `README.md`，通过
+`_layouts/blog.html` 生成博客页面；整个站点都不需要手动运行生成脚本。
 
 ## YAML 编辑注意事项
 

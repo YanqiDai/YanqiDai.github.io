@@ -1,165 +1,15 @@
-#!/usr/bin/env node
-
-const fs = require("node:fs");
-const path = require("node:path");
-const { Marked } = require("marked");
-
-const root = __dirname;
-const sourcePath = path.join(root, "README.md");
-const outputPath = path.join(root, "index.html");
-
-const source = fs.readFileSync(sourcePath, "utf8");
-const headings = [];
-const slugCounts = new Map();
-
-function escapeHtml(value) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function plainHeading(value) {
-  return value
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
-    .replace(/[*_~]/g, "")
-    .replace(/<[^>]+>/g, "")
-    .trim();
-}
-
-function makeSlug(value) {
-  const base = plainHeading(value)
-    .normalize("NFKC")
-    .toLowerCase()
-    .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
-    .replace(/^-+|-+$/g, "") || "section";
-  const count = slugCounts.get(base) || 0;
-  slugCounts.set(base, count + 1);
-  return count === 0 ? base : `${base}-${count + 1}`;
-}
-
-const formulas = {
-  "A=(r-l)\\min(h_l,h_r)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>A</mi><mo>=</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>)</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>h</mi><mi>l</mi></msub><mo>,</mo><msub><mi>h</mi><mi>r</mi></msub><mo>)</mo></math>`,
-  "w_i=\\min(L_i,R_i)-h_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>L</mi><mi>i</mi></msub><mo>,</mo><msub><mi>R</mi><mi>i</mi></msub><mo>)</mo><mo>−</mo><msub><mi>h</mi><mi>i</mi></msub></math>`,
-  "dp_i=\\max(nums_i, dp_{i-1}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
-  "answer_i=\\left(\\prod_{j<i}nums_j\\right)\\left(\\prod_{j>i}nums_j\\right)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>answer</mi><mi>i</mi></msub><mo>=</mo><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&lt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&gt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow></math>`,
-  "C_n=\\frac{1}{n+1}\\binom{2n}{n}": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>C</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></math>`,
-  "A_{i-1}\\le B_j,\\qquad B_{j-1}\\le A_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>B</mi><mi>j</mi></msub><mo>,</mo><mspace width="2em"/><msub><mi>B</mi><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>A</mi><mi>i</mi></msub></math>`,
-  "dp_i=\\max(dp_{i-1},dp_{i-2}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
-  "pal[l][r]=(s_l=s_r)\\land pal[l+1][r-1]": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>pal</mi><mo>[</mo><mi>l</mi><mo>]</mo><mo>[</mo><mi>r</mi><mo>]</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mi>l</mi></msub><mo>=</mo><msub><mi>s</mi><mi>r</mi></msub><mo>)</mo><mo>∧</mo><mi>pal</mi><mo>[</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>[</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>]</mo></math>`,
-};
-
-function renderFormula(tex) {
-  const normalized = tex.trim();
-  const math = formulas[normalized];
-  if (math) {
-    return `<div class="math-block" data-tex="${escapeHtml(normalized)}" aria-label="公式：${escapeHtml(normalized)}">${math}</div>`;
-  }
-  return `<div class="math-block"><code>${escapeHtml(normalized)}</code></div>`;
-}
-
-const preparedSource = source
-  // GFM treats unescaped pipes inside table cells as separators, including pipes in code spans.
-  .replaceAll("`O(|s|+|p|)`", "`O(\\|s\\|+\\|p\\|)`")
-  .replaceAll("`O(|s|+|t|)`", "`O(\\|s\\|+\\|t\\|)`")
-  .replace(/^\\\[\n([\s\S]*?)\n\\\]$/gm, (_, tex) => renderFormula(tex));
-
-const marked = new Marked({ gfm: true });
-let documentTitleRendered = false;
-let moduleSectionStarted = false;
-marked.use({
-  renderer: {
-    heading(token) {
-      const text = plainHeading(token.text);
-      const id = makeSlug(text);
-      headings.push({ depth: token.depth, id, text });
-      const inner = this.parser.parseInline(token.tokens);
-      let outputDepth;
-      let headingClass = "";
-      if (!documentTitleRendered && token.depth === 1) {
-        documentTitleRendered = true;
-        outputDepth = 1;
-      } else if (token.depth === 1) {
-        moduleSectionStarted = true;
-        outputDepth = 2;
-        headingClass = ' class="module-heading"';
-      } else if (!moduleSectionStarted && token.depth === 2) {
-        outputDepth = 2;
-        headingClass = ' class="intro-heading"';
-      } else {
-        outputDepth = Math.min(6, token.depth + 1);
-      }
-      return `<h${outputDepth}${headingClass} id="${id}" data-toc-heading data-source-depth="${token.depth}" tabindex="-1">${inner}<a class="heading-anchor" href="#${id}" aria-label="复制本节链接">#</a></h${outputDepth}>\n`;
-    },
-  },
-});
-
-let articleHtml = marked.parse(preparedSource);
-articleHtml = articleHtml
-  .replace(/<th(?=[ >])/g, '<th scope="col"')
-  .replaceAll("<table>", '<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表格"><table>')
-  .replaceAll("</table>", "</table></div>");
-
-function buildToc(items) {
-  const first = items[0];
-  const introChildren = [];
-  const groups = [];
-  let current = null;
-
-  for (const item of items.slice(1)) {
-    if (item.depth === 1) {
-      current = { root: item, children: [] };
-      groups.push(current);
-    } else if (current) {
-      current.children.push(item);
-    } else {
-      introChildren.push(item);
-    }
-  }
-
-  const childLink = (item) => `<li class="toc-depth-${item.depth}"><a class="toc-link" href="#${item.id}" data-heading-id="${item.id}" title="${escapeHtml(item.text)}">${escapeHtml(item.text)}</a></li>`;
-  const overview = `
-    <section class="toc-group is-open" data-toc-group>
-      <div class="toc-group-header">
-        <a class="toc-link toc-module-link" href="#${first.id}" data-heading-id="${first.id}">课程总览</a>
-        <button class="toc-group-toggle" type="button" aria-expanded="true" aria-label="收起课程总览" title="展开或收起"><span aria-hidden="true">⌄</span></button>
-      </div>
-      <ul class="toc-children">${introChildren.map(childLink).join("")}</ul>
-    </section>`;
-
-  const modules = groups.map(({ root: groupRoot, children }) => `
-    <section class="toc-group" data-toc-group>
-      <div class="toc-group-header">
-        <a class="toc-link toc-module-link" href="#${groupRoot.id}" data-heading-id="${groupRoot.id}" title="${escapeHtml(groupRoot.text)}">${escapeHtml(groupRoot.text)}</a>
-        <button class="toc-group-toggle" type="button" aria-expanded="false" aria-label="展开${escapeHtml(groupRoot.text)}" title="展开或收起"><span aria-hidden="true">⌄</span></button>
-      </div>
-      <ul class="toc-children" hidden>${children.map(childLink).join("")}</ul>
-    </section>`).join("");
-
-  return overview + modules;
-}
-
-const tocHtml = buildToc(headings);
-const buildDate = new Intl.DateTimeFormat("zh-CN", {
-  timeZone: "Asia/Shanghai",
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-}).format(new Date());
-
-const html = `<!doctype html>
-<html lang="zh-CN" data-theme="dark">
+---
+---
+<!doctype html>
+<html lang="{{ page.lang | default: 'zh-CN' | escape }}" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="description" content="LeetCode 热题 100 刷题前算法知识讲义（Python 版），覆盖当前 100 道题及 12 道困难题。">
+  <meta name="description" content="{{ page.description | default: page.title | escape }}">
   <meta name="color-scheme" content="dark light">
   <meta name="theme-color" content="#03070b" media="(prefers-color-scheme: dark)">
   <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <title>LeetCode 热题 100：刷题前算法知识详解（Python 版）</title>
+  <title>{{ page.title | default: "Blog" | escape }}</title>
   <script>
     (() => {
       try {
@@ -761,10 +611,10 @@ const html = `<!doctype html>
   <aside class="sidebar" id="sidebar" aria-label="文章目录">
     <header class="sidebar-header">
       <div class="sidebar-title-row">
-        <div class="sidebar-mark" aria-hidden="true">Py</div>
+        <div class="sidebar-mark" aria-hidden="true">{{ page.sidebar_mark | default: "✦" | escape }}</div>
         <div class="sidebar-heading">
-          <strong>LeetCode 热题 100</strong>
-          <span>Python 算法预习讲义</span>
+          <strong>{{ page.sidebar_title | default: page.title | escape }}</strong>
+          {% if page.sidebar_subtitle %}<span>{{ page.sidebar_subtitle | escape }}</span>{% endif %}
         </div>
         <div class="sidebar-actions">
           <button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换为浅色主题" title="切换颜色主题">
@@ -791,12 +641,11 @@ const html = `<!doctype html>
       </div>
     </header>
     <nav class="toc-nav" id="toc" aria-label="分章节目录">
-      ${tocHtml}
       <p class="toc-empty" id="toc-empty" hidden>没有匹配的章节</p>
     </nav>
     <footer class="sidebar-footer">
-      <a class="home-link" href="https://yanqidai.github.io/" data-same-tab>← 返回个人主页</a>
-      <span>100 题 · 17 个官方模块 · 12 道困难题</span>
+      <a class="home-link" href="{{ page.home_url | default: "/" | escape }}" data-same-tab>← {{ page.home_label | default: "返回个人主页" | escape }}</a>
+      {% if page.stats %}<span>{{ page.stats | escape }}</span>{% endif %}
     </footer>
   </aside>
 
@@ -806,10 +655,12 @@ const html = `<!doctype html>
 
   <div class="main-shell">
     <main class="article" id="main-content">
-      ${articleHtml}
+      {{ content }}
+
+
       <footer class="article-footer">
-        <span>由 README.md 生成 · 更新于 ${buildDate}</span>
-        <a class="back-to-top" href="#${headings[0].id}">返回顶部 ↑</a>
+        <span>由 {{ page.source_name | default: "README.md" | escape }} 自动渲染 · 本次构建于 {{ site.time | date: "%Y-%m-%d" }}</span>
+        <a class="back-to-top" href="#main-content">返回顶部 ↑</a>
       </footer>
     </main>
   </div>
@@ -818,6 +669,181 @@ const html = `<!doctype html>
   <script>
     (() => {
       "use strict";
+
+      const articleRoot = document.getElementById("main-content");
+      
+      const formulaMarkup = {
+        "A=(r-l)\\min(h_l,h_r)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>A</mi><mo>=</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>)</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>h</mi><mi>l</mi></msub><mo>,</mo><msub><mi>h</mi><mi>r</mi></msub><mo>)</mo></math>`,
+        "w_i=\\min(L_i,R_i)-h_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>L</mi><mi>i</mi></msub><mo>,</mo><msub><mi>R</mi><mi>i</mi></msub><mo>)</mo><mo>−</mo><msub><mi>h</mi><mi>i</mi></msub></math>`,
+        "dp_i=\\max(nums_i, dp_{i-1}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
+        "answer_i=\\left(\\prod_{j<i}nums_j\\right)\\left(\\prod_{j>i}nums_j\\right)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>answer</mi><mi>i</mi></msub><mo>=</mo><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&lt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&gt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow></math>`,
+        "C_n=\\frac{1}{n+1}\\binom{2n}{n}": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>C</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></math>`,
+        "A_{i-1}\\le B_j,\\qquad B_{j-1}\\le A_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>B</mi><mi>j</mi></msub><mo>,</mo><mspace width="2em"/><msub><mi>B</mi><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>A</mi><mi>i</mi></msub></math>`,
+        "dp_i=\\max(dp_{i-1},dp_{i-2}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
+        "pal[l][r]=(s_l=s_r)\\land pal[l+1][r-1]": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>pal</mi><mo>[</mo><mi>l</mi><mo>]</mo><mo>[</mo><mi>r</mi><mo>]</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mi>l</mi></msub><mo>=</mo><msub><mi>s</mi><mi>r</mi></msub><mo>)</mo><mo>∧</mo><mi>pal</mi><mo>[</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>[</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>]</mo></math>`,
+      };
+      
+      articleRoot.querySelectorAll("p").forEach((paragraph) => {
+        const formulaMatch = paragraph.textContent.trim().match(/^\\?\[\s*([\s\S]*?)\s*\\?\]$/);
+        if (!formulaMatch) return;
+      
+        const tex = formulaMatch[1].trim();
+        const formula = document.createElement("div");
+        formula.className = "math-block";
+        formula.dataset.tex = tex;
+        formula.setAttribute("aria-label", "公式：" + tex);
+      
+        if (formulaMarkup[tex]) {
+          formula.innerHTML = formulaMarkup[tex];
+        } else {
+          const code = document.createElement("code");
+          code.textContent = tex;
+          formula.append(code);
+        }
+        paragraph.replaceWith(formula);
+      });
+      
+      articleRoot.querySelectorAll("table").forEach((table) => {
+        table.querySelectorAll("th").forEach((cell) => cell.setAttribute("scope", "col"));
+        if (table.parentElement?.classList.contains("table-wrap")) return;
+        const wrapper = document.createElement("div");
+        wrapper.className = "table-wrap";
+        wrapper.tabIndex = 0;
+        wrapper.setAttribute("role", "region");
+        wrapper.setAttribute("aria-label", "可横向滚动的数据表格");
+        table.before(wrapper);
+        wrapper.append(table);
+      });
+      
+      function retagHeading(heading, tagName) {
+        if (heading.tagName.toLowerCase() === tagName) return heading;
+        const replacement = document.createElement(tagName);
+        [...heading.attributes].forEach((attribute) => replacement.setAttribute(attribute.name, attribute.value));
+        replacement.innerHTML = heading.innerHTML;
+        heading.replaceWith(replacement);
+        return replacement;
+      }
+      
+      function makeHeadingSlug(value, counts) {
+        const base = value
+          .normalize("NFKC")
+          .toLocaleLowerCase("zh-CN")
+          .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+          .replace(/^-+|-+$/g, "") || "section";
+        const count = counts.get(base) || 0;
+        counts.set(base, count + 1);
+        return count === 0 ? base : base + "-" + (count + 1);
+      }
+      
+      const rawHeadings = [...articleRoot.querySelectorAll("h1, h2, h3, h4, h5, h6")];
+      const slugCounts = new Map();
+      const headingItems = [];
+      let firstTitleSeen = false;
+      let moduleSectionStarted = false;
+      
+      rawHeadings.forEach((sourceHeading) => {
+        const sourceDepth = Number(sourceHeading.tagName.slice(1));
+        const text = sourceHeading.textContent.trim();
+        let outputTag = sourceHeading.tagName.toLowerCase();
+        let headingClass = "";
+      
+        if (!firstTitleSeen && sourceDepth === 1) {
+          firstTitleSeen = true;
+          outputTag = "h1";
+        } else if (sourceDepth === 1) {
+          moduleSectionStarted = true;
+          outputTag = "h2";
+          headingClass = "module-heading";
+        } else if (!moduleSectionStarted && sourceDepth === 2) {
+          outputTag = "h2";
+          headingClass = "intro-heading";
+        } else {
+          outputTag = "h" + Math.min(6, sourceDepth + 1);
+        }
+      
+        const heading = retagHeading(sourceHeading, outputTag);
+        if (headingClass) heading.classList.add(headingClass);
+        const id = makeHeadingSlug(text, slugCounts);
+        heading.id = id;
+        heading.dataset.tocHeading = "";
+        heading.dataset.sourceDepth = String(sourceDepth);
+        heading.tabIndex = -1;
+      
+        const anchor = document.createElement("a");
+        anchor.className = "heading-anchor";
+        anchor.href = "#" + id;
+        anchor.setAttribute("aria-label", "复制本节链接");
+        anchor.textContent = "#";
+        heading.append(anchor);
+      
+        headingItems.push({ id, text, sourceDepth });
+      });
+      
+      function escapeToc(value) {
+        return value.replace(/[&<>"']/g, (character) => {
+          if (character === "&") return "&amp;";
+          if (character === "<") return "&lt;";
+          if (character === ">") return "&gt;";
+          if (character === '"') return "&quot;";
+          return "&#39;";
+        });
+      }
+      
+      function tocChild(item) {
+        return '<li class="toc-depth-' + item.sourceDepth + '"><a class="toc-link" href="#' +
+          escapeToc(item.id) + '" data-heading-id="' + escapeToc(item.id) + '" title="' +
+          escapeToc(item.text) + '">' + escapeToc(item.text) + "</a></li>";
+      }
+      
+      function buildToc(items) {
+        if (!items.length) return "";
+        const first = items[0];
+        const introChildren = [];
+        const groups = [];
+        let current = null;
+      
+        items.slice(1).forEach((item) => {
+          if (item.sourceDepth === 1) {
+            current = { root: item, children: [] };
+            groups.push(current);
+          } else if (current) {
+            current.children.push(item);
+          } else {
+            introChildren.push(item);
+          }
+        });
+      
+        const overview =
+          '<section class="toc-group is-open" data-toc-group>' +
+            '<div class="toc-group-header">' +
+              '<a class="toc-link toc-module-link" href="#' + escapeToc(first.id) +
+                '" data-heading-id="' + escapeToc(first.id) + '">课程总览</a>' +
+              '<button class="toc-group-toggle" type="button" aria-expanded="true" ' +
+                'aria-label="收起课程总览" title="展开或收起"><span aria-hidden="true">⌄</span></button>' +
+            '</div>' +
+            '<ul class="toc-children">' + introChildren.map(tocChild).join("") + "</ul>" +
+          "</section>";
+      
+        const modules = groups.map((group) =>
+          '<section class="toc-group" data-toc-group>' +
+            '<div class="toc-group-header">' +
+              '<a class="toc-link toc-module-link" href="#' + escapeToc(group.root.id) +
+                '" data-heading-id="' + escapeToc(group.root.id) + '" title="' +
+                escapeToc(group.root.text) + '">' + escapeToc(group.root.text) + "</a>" +
+              '<button class="toc-group-toggle" type="button" aria-expanded="false" aria-label="展开' +
+                escapeToc(group.root.text) + '" title="展开或收起"><span aria-hidden="true">⌄</span></button>' +
+            '</div>' +
+            '<ul class="toc-children" hidden>' + group.children.map(tocChild).join("") + "</ul>" +
+          "</section>"
+        ).join("");
+      
+        return overview + modules;
+      }
+      
+      const tocRoot = document.getElementById("toc");
+      tocRoot.insertAdjacentHTML("afterbegin", buildToc(headingItems));
+      const backToTop = document.querySelector(".back-to-top");
+      if (backToTop && headingItems[0]) backToTop.href = "#" + headingItems[0].id;
 
       const body = document.body;
       const sidebar = document.getElementById("sidebar");
@@ -833,6 +859,7 @@ const html = `<!doctype html>
       const progress = document.getElementById("reading-progress");
       const themeToggle = document.getElementById("theme-toggle");
       const mobileQuery = window.matchMedia("(max-width: 900px)");
+      const sidebarPreferenceKey = "blog-sidebar-collapsed:{{ page.url | escape }}";
       let previousFocus = null;
       let activeId = "";
       let scrollQueued = false;
@@ -852,12 +879,12 @@ const html = `<!doctype html>
       syncThemeToggle();
 
       function readSidebarPreference() {
-        try { return localStorage.getItem("hot100-sidebar-collapsed"); }
+        try { return localStorage.getItem(sidebarPreferenceKey); }
         catch { return null; }
       }
 
       function writeSidebarPreference(value) {
-        try { localStorage.setItem("hot100-sidebar-collapsed", value); }
+        try { localStorage.setItem(sidebarPreferenceKey, value); }
         catch { /* Local file privacy settings may disable storage; the page still works. */ }
       }
 
@@ -1076,8 +1103,3 @@ const html = `<!doctype html>
   </script>
 </body>
 </html>
-`;
-
-fs.writeFileSync(outputPath, html, "utf8");
-console.log(`Generated ${outputPath}`);
-console.log(`Headings: ${headings.length}; bytes: ${Buffer.byteLength(html)}`);

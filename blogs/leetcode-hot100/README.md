@@ -325,7 +325,7 @@ for right, ch in enumerate(s):
 | 题目 | 难度 | 核心模型 | 目标复杂度 |
 |---|---|---|---|
 | [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) | 中等 | 可变窗口；最近位置让左端跳跃 | `O(n)` / `O(字符集)` |
-| [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/) | 中等 | 长度固定的频次窗口 | `O(|s|+|p|)` / `O(1)` |
+| [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/) | 中等 | 长度固定的频次窗口 | `O(\|s\|+\|p\|)` / `O(1)` |
 
 ---
 
@@ -411,7 +411,7 @@ for right, ch in enumerate(s):
 |---|---|---|---|
 | [560. 和为 K 的子数组](https://leetcode.cn/problems/subarray-sum-equals-k/) | 中等 | 前缀和 + 此前前缀频次 | `O(n)` / `O(n)` |
 | [239. 滑动窗口最大值](https://leetcode.cn/problems/sliding-window-maximum/) | 困难 | 保存下标的单调递减队列 | `O(n)` / `O(k)` |
-| [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/) | 困难 | 字符频次；扩张有效、收缩极限 | `O(|s|+|t|)` / `O(字符集)` |
+| [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/) | 困难 | 字符频次；扩张有效、收缩极限 | `O(\|s\|+\|t\|)` / `O(字符集)` |
 
 ---
 
