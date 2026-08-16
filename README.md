@@ -125,10 +125,13 @@ hero_intro: >-
 
 ```yaml
 - title: "Blog title"
+  date: "2026-08-16"
   description: "A short introduction shown on the homepage."
   url: "blogs/leetcode-hot100/index.html"
   cta: "Read the blog"
 ```
+
+`date` 是博客发布日期，使用并保留引号包裹的 `YYYY-MM-DD` 格式；该日期会显示在主页博客卡片中。博客仍按照 `blogs.items` 中的顺序展示，不会根据日期自动排序。
 
 `url` 填写相对于主页的文件路径，例如 `blogs/leetcode-hot100/index.html`。每篇博客放在 `blogs/` 下独立的文件夹中，便于后续继续添加和管理；博客卡片整张都可以点击。显式写出 `index.html` 可以同时兼容本地双击打开和 GitHub Pages。
 
