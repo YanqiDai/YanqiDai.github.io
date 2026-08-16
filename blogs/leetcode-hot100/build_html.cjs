@@ -1,0 +1,1083 @@
+#!/usr/bin/env node
+
+const fs = require("node:fs");
+const path = require("node:path");
+const { Marked } = require("marked");
+
+const root = __dirname;
+const sourcePath = path.join(root, "README.md");
+const outputPath = path.join(root, "index.html");
+
+const source = fs.readFileSync(sourcePath, "utf8");
+const headings = [];
+const slugCounts = new Map();
+
+function escapeHtml(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function plainHeading(value) {
+  return value
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1")
+    .replace(/[*_~]/g, "")
+    .replace(/<[^>]+>/g, "")
+    .trim();
+}
+
+function makeSlug(value) {
+  const base = plainHeading(value)
+    .normalize("NFKC")
+    .toLowerCase()
+    .replace(/[^\p{Letter}\p{Number}]+/gu, "-")
+    .replace(/^-+|-+$/g, "") || "section";
+  const count = slugCounts.get(base) || 0;
+  slugCounts.set(base, count + 1);
+  return count === 0 ? base : `${base}-${count + 1}`;
+}
+
+const formulas = {
+  "A=(r-l)\\min(h_l,h_r)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>A</mi><mo>=</mo><mo>(</mo><mi>r</mi><mo>−</mo><mi>l</mi><mo>)</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>h</mi><mi>l</mi></msub><mo>,</mo><msub><mi>h</mi><mi>r</mi></msub><mo>)</mo></math>`,
+  "w_i=\\min(L_i,R_i)-h_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>w</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">min</mi><mo>(</mo><msub><mi>L</mi><mi>i</mi></msub><mo>,</mo><msub><mi>R</mi><mi>i</mi></msub><mo>)</mo><mo>−</mo><msub><mi>h</mi><mi>i</mi></msub></math>`,
+  "dp_i=\\max(nums_i, dp_{i-1}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
+  "answer_i=\\left(\\prod_{j<i}nums_j\\right)\\left(\\prod_{j>i}nums_j\\right)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>answer</mi><mi>i</mi></msub><mo>=</mo><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&lt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow><mrow><mo>(</mo><munder><mo>∏</mo><mrow><mi>j</mi><mo>&gt;</mo><mi>i</mi></mrow></munder><msub><mi>nums</mi><mi>j</mi></msub><mo>)</mo></mrow></math>`,
+  "C_n=\\frac{1}{n+1}\\binom{2n}{n}": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>C</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>(</mo><mfrac linethickness="0"><mrow><mn>2</mn><mi>n</mi></mrow><mi>n</mi></mfrac><mo>)</mo></math>`,
+  "A_{i-1}\\le B_j,\\qquad B_{j-1}\\le A_i": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>A</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>B</mi><mi>j</mi></msub><mo>,</mo><mspace width="2em"/><msub><mi>B</mi><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>≤</mo><msub><mi>A</mi><mi>i</mi></msub></math>`,
+  "dp_i=\\max(dp_{i-1},dp_{i-2}+nums_i)": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><msub><mi>dp</mi><mi>i</mi></msub><mo>=</mo><mi mathvariant="normal">max</mi><mo>(</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>dp</mi><mrow><mi>i</mi><mo>−</mo><mn>2</mn></mrow></msub><mo>+</mo><msub><mi>nums</mi><mi>i</mi></msub><mo>)</mo></math>`,
+  "pal[l][r]=(s_l=s_r)\\land pal[l+1][r-1]": `<math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mi>pal</mi><mo>[</mo><mi>l</mi><mo>]</mo><mo>[</mo><mi>r</mi><mo>]</mo><mo>=</mo><mo>(</mo><msub><mi>s</mi><mi>l</mi></msub><mo>=</mo><msub><mi>s</mi><mi>r</mi></msub><mo>)</mo><mo>∧</mo><mi>pal</mi><mo>[</mo><mi>l</mi><mo>+</mo><mn>1</mn><mo>]</mo><mo>[</mo><mi>r</mi><mo>−</mo><mn>1</mn><mo>]</mo></math>`,
+};
+
+function renderFormula(tex) {
+  const normalized = tex.trim();
+  const math = formulas[normalized];
+  if (math) {
+    return `<div class="math-block" data-tex="${escapeHtml(normalized)}" aria-label="公式：${escapeHtml(normalized)}">${math}</div>`;
+  }
+  return `<div class="math-block"><code>${escapeHtml(normalized)}</code></div>`;
+}
+
+const preparedSource = source
+  // GFM treats unescaped pipes inside table cells as separators, including pipes in code spans.
+  .replaceAll("`O(|s|+|p|)`", "`O(\\|s\\|+\\|p\\|)`")
+  .replaceAll("`O(|s|+|t|)`", "`O(\\|s\\|+\\|t\\|)`")
+  .replace(/^\\\[\n([\s\S]*?)\n\\\]$/gm, (_, tex) => renderFormula(tex));
+
+const marked = new Marked({ gfm: true });
+let documentTitleRendered = false;
+let moduleSectionStarted = false;
+marked.use({
+  renderer: {
+    heading(token) {
+      const text = plainHeading(token.text);
+      const id = makeSlug(text);
+      headings.push({ depth: token.depth, id, text });
+      const inner = this.parser.parseInline(token.tokens);
+      let outputDepth;
+      let headingClass = "";
+      if (!documentTitleRendered && token.depth === 1) {
+        documentTitleRendered = true;
+        outputDepth = 1;
+      } else if (token.depth === 1) {
+        moduleSectionStarted = true;
+        outputDepth = 2;
+        headingClass = ' class="module-heading"';
+      } else if (!moduleSectionStarted && token.depth === 2) {
+        outputDepth = 2;
+        headingClass = ' class="intro-heading"';
+      } else {
+        outputDepth = Math.min(6, token.depth + 1);
+      }
+      return `<h${outputDepth}${headingClass} id="${id}" data-toc-heading data-source-depth="${token.depth}" tabindex="-1">${inner}<a class="heading-anchor" href="#${id}" aria-label="复制本节链接">#</a></h${outputDepth}>\n`;
+    },
+  },
+});
+
+let articleHtml = marked.parse(preparedSource);
+articleHtml = articleHtml
+  .replace(/<th(?=[ >])/g, '<th scope="col"')
+  .replaceAll("<table>", '<div class="table-wrap" tabindex="0" role="region" aria-label="可横向滚动的数据表格"><table>')
+  .replaceAll("</table>", "</table></div>");
+
+function buildToc(items) {
+  const first = items[0];
+  const introChildren = [];
+  const groups = [];
+  let current = null;
+
+  for (const item of items.slice(1)) {
+    if (item.depth === 1) {
+      current = { root: item, children: [] };
+      groups.push(current);
+    } else if (current) {
+      current.children.push(item);
+    } else {
+      introChildren.push(item);
+    }
+  }
+
+  const childLink = (item) => `<li class="toc-depth-${item.depth}"><a class="toc-link" href="#${item.id}" data-heading-id="${item.id}" title="${escapeHtml(item.text)}">${escapeHtml(item.text)}</a></li>`;
+  const overview = `
+    <section class="toc-group is-open" data-toc-group>
+      <div class="toc-group-header">
+        <a class="toc-link toc-module-link" href="#${first.id}" data-heading-id="${first.id}">课程总览</a>
+        <button class="toc-group-toggle" type="button" aria-expanded="true" aria-label="收起课程总览" title="展开或收起"><span aria-hidden="true">⌄</span></button>
+      </div>
+      <ul class="toc-children">${introChildren.map(childLink).join("")}</ul>
+    </section>`;
+
+  const modules = groups.map(({ root: groupRoot, children }) => `
+    <section class="toc-group" data-toc-group>
+      <div class="toc-group-header">
+        <a class="toc-link toc-module-link" href="#${groupRoot.id}" data-heading-id="${groupRoot.id}" title="${escapeHtml(groupRoot.text)}">${escapeHtml(groupRoot.text)}</a>
+        <button class="toc-group-toggle" type="button" aria-expanded="false" aria-label="展开${escapeHtml(groupRoot.text)}" title="展开或收起"><span aria-hidden="true">⌄</span></button>
+      </div>
+      <ul class="toc-children" hidden>${children.map(childLink).join("")}</ul>
+    </section>`).join("");
+
+  return overview + modules;
+}
+
+const tocHtml = buildToc(headings);
+const buildDate = new Intl.DateTimeFormat("zh-CN", {
+  timeZone: "Asia/Shanghai",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
+
+const html = `<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="LeetCode 热题 100 刷题前算法知识讲义（Python 版），覆盖当前 100 道题及 12 道困难题。">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#03070b" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <title>LeetCode 热题 100：刷题前算法知识详解（Python 版）</title>
+  <script>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+        document.documentElement.setAttribute("data-theme", saved === "light" ? "light" : "dark");
+      } catch {
+        document.documentElement.setAttribute("data-theme", "dark");
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      color-scheme: dark;
+      --sidebar-width: 324px;
+      --bg: #03070b;
+      --bg-2: #071522;
+      --card: #0a1928;
+      --card-strong: #10263b;
+      --text: #f7fbff;
+      --muted: #a8b9ca;
+      --muted-2: #758ba1;
+      --line: #203b55;
+      --line-soft: #142b40;
+      --accent: #78add8;
+      --accent-surface: #123554;
+      --accent-surface-strong: #19476f;
+      --on-accent: #03070b;
+      --shadow: 0 12px 34px rgba(0, 0, 0, 0.28);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --surface: var(--card);
+      --ink: var(--text);
+      --brand: var(--accent);
+      --brand-strong: var(--accent);
+      --accent-strong: var(--accent);
+      --accent-soft: var(--accent-surface);
+      --accent-border: var(--accent-surface-strong);
+      --nav-bg: #050d15;
+      --nav: var(--nav-bg);
+      --menu-bg: var(--nav-bg);
+      --nav-text: var(--text);
+      --nav-muted: var(--muted);
+      --code: #02060b;
+      --code-ink: #eaf3fb;
+      --table-head: var(--card-strong);
+      --table-stripe: var(--bg-2);
+      --table-hover: var(--accent-surface);
+      --inline-code-bg: var(--card-strong);
+      --inline-code-text: var(--accent);
+      --quote-bg: var(--card);
+      --quote-text: var(--text);
+      --overlay: rgba(0, 8, 18, 0.72);
+      --sans: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    html[data-theme="light"] {
+      color-scheme: light;
+      --bg: #ffffff;
+      --bg-2: #f4f9fd;
+      --card: #ffffff;
+      --card-strong: #eaf4fb;
+      --text: #10283d;
+      --muted: #4b667d;
+      --muted-2: #61798f;
+      --line: #c9dfef;
+      --line-soft: #e3eef7;
+      --accent: #356f9d;
+      --accent-surface: #e4f2fb;
+      --accent-surface-strong: #cfe7f7;
+      --on-accent: #ffffff;
+      --shadow: 0 12px 30px rgba(30, 80, 120, 0.10);
+      --accent-strong: var(--accent);
+      --accent-soft: var(--accent-surface);
+      --accent-border: var(--accent-surface-strong);
+      --nav-bg: #ffffff;
+      --nav: var(--nav-bg);
+      --menu-bg: var(--nav-bg);
+      --code: var(--card-strong);
+      --code-ink: var(--text);
+      --table-head: var(--accent-surface);
+      --table-stripe: var(--bg-2);
+      --table-hover: var(--accent-surface);
+      --inline-code-bg: var(--accent-surface);
+      --inline-code-text: var(--accent);
+      --quote-bg: var(--bg-2);
+      --quote-text: var(--text);
+      --overlay: rgba(16, 42, 67, 0.42);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 28px; background: var(--bg); }
+    body {
+      margin: 0;
+      min-width: 320px;
+      overflow-x: hidden;
+      isolation: isolate;
+      background: var(--bg);
+      background-attachment: fixed;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.78;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+    body.drawer-open { overflow: hidden; }
+    a { color: var(--brand-strong); text-underline-offset: 0.2em; }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+    .skip-link {
+      position: fixed;
+      z-index: 1000;
+      top: 10px;
+      left: 10px;
+      transform: translateY(-150%);
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card-strong);
+      color: var(--text);
+      font-weight: 700;
+      box-shadow: var(--shadow);
+    }
+    .skip-link:focus { transform: none; }
+
+    .reading-progress {
+      position: fixed;
+      z-index: 1000;
+      inset: 0 auto auto 0;
+      width: 0;
+      height: 3px;
+      background: var(--accent);
+    }
+
+    .sidebar {
+      position: fixed;
+      z-index: 80;
+      inset: 0 auto 0 0;
+      display: flex;
+      width: var(--sidebar-width);
+      flex-direction: column;
+      background: var(--nav);
+      color: var(--nav-text);
+      border-right: 1px solid var(--line);
+      transition: transform 220ms ease;
+    }
+    .sidebar-header {
+      flex: 0 0 auto;
+      padding: 23px 20px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .sidebar-title-row { display: flex; align-items: flex-start; gap: 12px; }
+    .sidebar-mark {
+      display: grid;
+      width: 39px;
+      height: 39px;
+      flex: 0 0 auto;
+      place-items: center;
+      border: 1px solid var(--accent-border);
+      border-radius: 12px;
+      background: var(--accent);
+      color: var(--on-accent);
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 800;
+    }
+    .sidebar-heading { min-width: 0; flex: 1; }
+    .sidebar-heading strong { display: block; font-size: 15px; line-height: 1.42; }
+    .sidebar-heading span { display: block; margin-top: 4px; color: var(--nav-muted); font-size: 12px; }
+    .sidebar-actions { display: inline-flex; flex: 0 0 auto; gap: 7px; }
+    .sidebar-close, .theme-toggle, .menu-button {
+      display: grid;
+      width: 44px;
+      height: 44px;
+      flex: 0 0 auto;
+      cursor: pointer;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: inherit;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .sidebar-close:hover, .theme-toggle:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+      background: var(--card-strong);
+    }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-moon { display: none; }
+    .theme-toggle .icon-sun { display: block; }
+    html[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+    html[data-theme="light"] .theme-toggle .icon-sun { display: none; }
+
+    .toc-tools { display: grid; gap: 10px; margin-top: 17px; }
+    .toc-search {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 13px;
+    }
+    .toc-search::placeholder { color: var(--muted-2); }
+    html:not([data-theme="light"]) .toc-search::-webkit-search-cancel-button { filter: invert(1); }
+    .toc-actions { display: flex; gap: 7px; }
+    .toc-actions button {
+      flex: 1;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--nav-muted);
+      font-size: 12px;
+      padding: 5px 8px;
+    }
+    .toc-actions button:hover { border-color: var(--accent); background: var(--card-strong); color: var(--text); }
+
+    .toc-nav {
+      min-height: 0;
+      flex: 1;
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: 10px 10px 25px;
+      scrollbar-color: var(--muted-2) transparent;
+      scrollbar-width: thin;
+    }
+    .toc-group { margin: 2px 0; }
+    .toc-group[hidden] { display: none; }
+    .toc-group-header { display: flex; align-items: center; gap: 2px; }
+    .toc-link {
+      display: block;
+      overflow: hidden;
+      border-left: 2px solid transparent;
+      border-radius: 7px;
+      color: var(--nav-muted);
+      font-size: 12.5px;
+      line-height: 1.42;
+      text-decoration: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .toc-link:hover { background: var(--card); color: var(--text); }
+    .toc-module-link { min-width: 0; flex: 1; padding: 8px 8px 8px 10px; color: var(--nav-text); font-weight: 650; }
+    .toc-group-toggle {
+      display: grid;
+      width: 31px;
+      height: 31px;
+      flex: 0 0 auto;
+      cursor: pointer;
+      place-items: center;
+      border: 0;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--nav-muted);
+    }
+    .toc-group-toggle:hover { background: var(--card); color: var(--text); }
+    .toc-group-toggle span { display: block; font-size: 17px; transition: transform 160ms ease; }
+    .toc-group:not(.is-open) .toc-group-toggle span { transform: rotate(-90deg); }
+    .toc-children { margin: 0; padding: 0 0 5px; list-style: none; }
+    .toc-children .toc-link { padding: 6px 9px 6px 20px; }
+    .toc-depth-3 .toc-link { padding-left: 34px; font-size: 12px; }
+    .toc-link[aria-current="location"] {
+      border-left-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+    .toc-empty { padding: 24px 12px; color: var(--nav-muted); font-size: 13px; text-align: center; }
+    .sidebar-footer {
+      display: grid;
+      gap: 5px;
+      flex: 0 0 auto;
+      padding: 11px 20px calc(11px + env(safe-area-inset-bottom));
+      border-top: 1px solid var(--line);
+      color: var(--nav-muted);
+      font-size: 11px;
+    }
+    .home-link {
+      width: fit-content;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 750;
+      text-decoration: none;
+    }
+    .home-link:hover { color: var(--accent-strong); }
+
+    .menu-button {
+      position: fixed;
+      z-index: 70;
+      top: 17px;
+      left: 17px;
+      visibility: hidden;
+      border-color: var(--line);
+      background: var(--card-strong);
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+    .menu-button:hover { border-color: var(--accent); background: var(--card-strong); }
+    .menu-icon { display: grid; gap: 4px; }
+    .menu-icon i { display: block; width: 17px; height: 2px; border-radius: 2px; background: currentColor; }
+
+    .drawer-overlay {
+      position: fixed;
+      z-index: 75;
+      inset: 0;
+      visibility: hidden;
+      cursor: pointer;
+      border: 0;
+      background: var(--overlay);
+      opacity: 0;
+      transition: opacity 180ms ease, visibility 180ms;
+    }
+
+    .main-shell {
+      min-height: 100vh;
+      margin-left: var(--sidebar-width);
+      transition: margin-left 220ms ease;
+    }
+    body.sidebar-collapsed .sidebar { transform: translateX(-101%); }
+    body.sidebar-collapsed .main-shell { margin-left: 0; }
+    body.sidebar-collapsed .menu-button { visibility: visible; opacity: 1; transform: none; }
+
+    .article {
+      position: relative;
+      width: min(100% - 64px, 1000px);
+      margin: 0 auto;
+      padding: 68px 0 110px;
+    }
+    .article > h1:first-child {
+      position: relative;
+      margin: 0 0 30px;
+      padding: 0 0 25px;
+      color: var(--text);
+      font-size: clamp(2rem, 4vw, 3.35rem);
+      line-height: 1.15;
+      letter-spacing: -0.055em;
+    }
+    .article > h1:first-child::after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 86px;
+      height: 5px;
+      border-radius: 5px;
+      background: var(--accent);
+      content: "";
+    }
+    .article h1, .article h2, .article h3, .article h4 {
+      scroll-margin-top: 24px;
+      text-wrap: balance;
+    }
+    .article [data-toc-heading]:focus-visible { outline: none; }
+    .article .module-heading {
+      margin: 92px 0 26px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--text);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      line-height: 1.26;
+      letter-spacing: -0.02em;
+    }
+    .article .intro-heading { margin: 48px 0 18px; color: var(--text); font-size: 1.55rem; line-height: 1.36; letter-spacing: -0.015em; }
+    .article h3 { margin: 54px 0 18px; color: var(--text); font-size: 1.5rem; line-height: 1.36; letter-spacing: -0.015em; }
+    .article h4 { margin: 36px 0 14px; color: var(--accent); font-size: 1.16rem; line-height: 1.45; }
+    .heading-anchor {
+      margin-left: 0.45em;
+      color: var(--brand);
+      font-size: 0.65em;
+      font-weight: 500;
+      opacity: 0;
+      text-decoration: none;
+      transition: opacity 120ms ease;
+    }
+    h1:hover .heading-anchor, h2:hover .heading-anchor, h3:hover .heading-anchor, h4:hover .heading-anchor, .heading-anchor:focus { opacity: 0.7; }
+    .article p { margin: 0 0 1.05em; }
+    .article strong { color: var(--text); font-weight: 750; }
+    .article ul, .article ol { padding-left: 1.55em; }
+    .article li { margin: 0.32em 0; padding-left: 0.14em; }
+    .article li::marker { color: var(--accent); font-weight: 700; }
+    .article hr { height: 1px; margin: 60px 0; border: 0; background: var(--line); }
+    .article blockquote {
+      margin: 24px 0 30px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--radius-md);
+      background: var(--quote-bg);
+      color: var(--quote-text);
+    }
+    .article blockquote p:last-child { margin-bottom: 0; }
+    .article :not(pre) > code {
+      padding: 0.16em 0.42em;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--inline-code-bg);
+      color: var(--inline-code-text);
+      font-family: var(--mono);
+      font-size: 0.88em;
+      overflow-wrap: anywhere;
+    }
+    .code-block {
+      position: relative;
+      margin: 24px 0 28px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--code);
+    }
+    .code-toolbar {
+      display: flex;
+      min-height: 38px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px 5px 14px;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--accent-strong);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+    .copy-code {
+      cursor: pointer;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--card-strong);
+      color: var(--text);
+      padding: 4px 9px;
+      font-family: var(--sans);
+      font-size: 11px;
+      text-transform: none;
+    }
+    .copy-code:hover { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+    .article pre {
+      max-width: 100%;
+      margin: 0;
+      overflow: auto;
+      padding: 19px 21px 22px;
+      color: var(--code-ink);
+      font-family: var(--mono);
+      font-size: 13.5px;
+      line-height: 1.65;
+      tab-size: 4;
+      scrollbar-color: var(--muted-2) var(--code);
+    }
+    .article pre code { font: inherit; white-space: pre; }
+
+    .table-wrap {
+      position: relative;
+      max-width: 100%;
+      margin: 25px 0 34px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      scrollbar-color: var(--muted-2) transparent;
+    }
+    .table-wrap::after {
+      position: sticky;
+      right: 0;
+      display: block;
+      width: 24px;
+      height: 1px;
+      margin-left: auto;
+      content: "";
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 1.55; }
+    th, td { min-width: 112px; padding: 11px 13px; border-right: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); text-align: left; vertical-align: top; }
+    th { position: sticky; top: 0; z-index: 1; background: var(--table-head); color: var(--text); font-weight: 750; white-space: nowrap; }
+    tr:last-child td { border-bottom: 0; }
+    th:last-child, td:last-child { border-right: 0; }
+    tbody tr:nth-child(even) { background: var(--table-stripe); }
+    tbody tr:hover { background: var(--table-hover); }
+    td:first-child { min-width: 154px; }
+    .difficulty {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 1px 8px;
+      font-size: 11px;
+      font-weight: 750;
+      white-space: nowrap;
+    }
+    .difficulty.easy,
+    .difficulty.medium,
+    .difficulty.hard {
+      border: 1px solid var(--accent-border);
+      background: var(--accent-soft);
+      color: var(--accent-strong);
+    }
+
+    .math-block {
+      margin: 25px 0;
+      overflow-x: auto;
+      padding: 17px 20px;
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius-md);
+      background: var(--quote-bg);
+      color: var(--text);
+      text-align: center;
+    }
+    .math-block math { margin: 0 auto; font-size: 1.15rem; }
+
+    .article-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 80px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .back-to-top { font-weight: 700; text-decoration: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+
+    @media (max-width: 900px) {
+      .sidebar { width: min(86vw, 340px); transform: translateX(-101%); background: var(--menu-bg); }
+      .toc-group-toggle { width: 40px; height: 40px; }
+      .main-shell, body.sidebar-collapsed .main-shell { margin-left: 0; }
+      .menu-button, body.sidebar-collapsed .menu-button { visibility: visible; opacity: 1; transform: none; }
+      body.drawer-open .sidebar { transform: none; }
+      body.drawer-open .drawer-overlay { visibility: visible; opacity: 1; }
+      body.drawer-open .menu-button { visibility: hidden; opacity: 0; }
+      .article { width: min(100% - 40px, 760px); padding-top: 76px; }
+      .article .module-heading { margin-top: 72px; }
+    }
+
+    @media (max-width: 520px) {
+      .article { width: calc(100% - 32px); padding-bottom: 78px; }
+      .article > h1:first-child { font-size: 2rem; }
+      .article .module-heading { font-size: 1.72rem; }
+      .article h3 { font-size: 1.35rem; }
+      .article pre { padding: 17px 16px 20px; font-size: 12.5px; }
+      th, td { padding: 10px 11px; }
+      .article-footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (max-width: 360px) {
+      .sidebar-title-row { align-items: center; }
+      .sidebar-heading strong { font-size: 13.5px; }
+      .sidebar-heading span { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+
+    @media print {
+      :root, html[data-theme="light"] {
+        color-scheme: light;
+        --bg: #fff;
+        --bg-2: #fff;
+        --card: #fff;
+        --card-strong: #fff;
+        --text: #111;
+        --muted: #444;
+        --line: #cfd3dc;
+        --line-soft: #e1e3e8;
+        --table-head: #eef0f4;
+        --table-stripe: #fafafa;
+        --inline-code-bg: #e5f2fc;
+        --inline-code-text: #1e5688;
+        --quote-bg: #f4f7fa;
+        --quote-text: #222;
+        --code: #f5f6f8;
+        --code-ink: #111;
+      }
+      body { background: #fff !important; color: #111; }
+      body::before { display: none; }
+      .sidebar, .menu-button, .drawer-overlay, .reading-progress, .skip-link, .copy-code { display: none !important; }
+      .main-shell { margin: 0 !important; }
+      .article { width: 100%; padding: 0; }
+      .article .module-heading { break-before: page; margin-top: 20px; }
+      .table-wrap, .article pre { overflow: visible; box-shadow: none; }
+      .table-wrap { break-inside: avoid; }
+      .article > h1:first-child { background: none; color: #111; animation: none; }
+      .code-block { box-shadow: none; }
+      a { color: inherit; text-decoration: none; }
+      .heading-anchor { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到正文</a>
+  <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
+  <button class="drawer-overlay" id="drawer-overlay" type="button" aria-label="关闭目录"></button>
+
+  <aside class="sidebar" id="sidebar" aria-label="文章目录">
+    <header class="sidebar-header">
+      <div class="sidebar-title-row">
+        <div class="sidebar-mark" aria-hidden="true">Py</div>
+        <div class="sidebar-heading">
+          <strong>LeetCode 热题 100</strong>
+          <span>Python 算法预习讲义</span>
+        </div>
+        <div class="sidebar-actions">
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="切换为浅色主题" title="切换颜色主题">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4.2"></circle>
+              <path d="M12 2v2.4M12 19.6V22M4.9 4.9l1.7 1.7M17.4 17.4l1.7 1.7M2 12h2.4M19.6 12H22M4.9 19.1l1.7-1.7M17.4 6.6l1.7-1.7"></path>
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+            </svg>
+          </button>
+          <button class="sidebar-close" id="sidebar-close" type="button" aria-controls="sidebar" aria-label="收起目录" title="收起目录">
+            <span aria-hidden="true">←</span>
+          </button>
+        </div>
+      </div>
+      <div class="toc-tools">
+        <label class="sr-only" for="toc-search">搜索目录</label>
+        <input class="toc-search" id="toc-search" type="search" placeholder="搜索章节…" autocomplete="off">
+        <div class="toc-actions" aria-label="目录分组操作">
+          <button id="expand-all" type="button">展开全部</button>
+          <button id="collapse-all" type="button">收起全部</button>
+        </div>
+      </div>
+    </header>
+    <nav class="toc-nav" id="toc" aria-label="分章节目录">
+      ${tocHtml}
+      <p class="toc-empty" id="toc-empty" hidden>没有匹配的章节</p>
+    </nav>
+    <footer class="sidebar-footer">
+      <a class="home-link" href="https://yanqidai.github.io/" data-same-tab>← 返回个人主页</a>
+      <span>100 题 · 17 个官方模块 · 12 道困难题</span>
+    </footer>
+  </aside>
+
+  <button class="menu-button" id="menu-button" type="button" aria-controls="sidebar" aria-expanded="false" aria-label="打开目录" title="打开目录">
+    <span class="menu-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+
+  <div class="main-shell">
+    <main class="article" id="main-content">
+      ${articleHtml}
+      <footer class="article-footer">
+        <span>由 README.md 生成 · 更新于 ${buildDate}</span>
+        <a class="back-to-top" href="#${headings[0].id}">返回顶部 ↑</a>
+      </footer>
+    </main>
+  </div>
+  <div class="sr-only" id="copy-status" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const body = document.body;
+      const sidebar = document.getElementById("sidebar");
+      const menuButton = document.getElementById("menu-button");
+      const closeButton = document.getElementById("sidebar-close");
+      const overlay = document.getElementById("drawer-overlay");
+      const toc = document.getElementById("toc");
+      const groups = [...document.querySelectorAll("[data-toc-group]")];
+      const tocLinks = [...document.querySelectorAll(".toc-link")];
+      const headings = [...document.querySelectorAll("[data-toc-heading]")];
+      const search = document.getElementById("toc-search");
+      const tocEmpty = document.getElementById("toc-empty");
+      const progress = document.getElementById("reading-progress");
+      const themeToggle = document.getElementById("theme-toggle");
+      const mobileQuery = window.matchMedia("(max-width: 900px)");
+      let previousFocus = null;
+      let activeId = "";
+      let scrollQueued = false;
+
+      function syncThemeToggle() {
+        const isLight = document.documentElement.getAttribute("data-theme") === "light";
+        themeToggle.setAttribute("aria-label", isLight ? "切换为深色主题" : "切换为浅色主题");
+      }
+
+      themeToggle.addEventListener("click", () => {
+        const next = document.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", next);
+        try { localStorage.setItem("theme", next); }
+        catch { /* Local file privacy settings may disable storage. */ }
+        syncThemeToggle();
+      });
+      syncThemeToggle();
+
+      function readSidebarPreference() {
+        try { return localStorage.getItem("hot100-sidebar-collapsed"); }
+        catch { return null; }
+      }
+
+      function writeSidebarPreference(value) {
+        try { localStorage.setItem("hot100-sidebar-collapsed", value); }
+        catch { /* Local file privacy settings may disable storage; the page still works. */ }
+      }
+
+      function setGroup(group, open) {
+        const button = group.querySelector(".toc-group-toggle");
+        const children = group.querySelector(".toc-children");
+        const label = group.querySelector(".toc-module-link")?.textContent.trim() || "本模块";
+        group.classList.toggle("is-open", open);
+        button.setAttribute("aria-expanded", String(open));
+        button.setAttribute("aria-label", (open ? "收起" : "展开") + label);
+        children.hidden = !open;
+      }
+
+      groups.forEach((group) => {
+        group.querySelector(".toc-group-toggle").addEventListener("click", () => {
+          setGroup(group, !group.classList.contains("is-open"));
+        });
+      });
+
+      document.getElementById("expand-all").addEventListener("click", () => groups.forEach((group) => setGroup(group, true)));
+      document.getElementById("collapse-all").addEventListener("click", () => groups.forEach((group) => setGroup(group, false)));
+
+      function syncSidebarA11y() {
+        const available = mobileQuery.matches ? body.classList.contains("drawer-open") : !body.classList.contains("sidebar-collapsed");
+        sidebar.toggleAttribute("inert", !available);
+        menuButton.setAttribute("aria-expanded", String(available));
+      }
+
+      function openSidebar() {
+        previousFocus = document.activeElement;
+        if (mobileQuery.matches) {
+          body.classList.add("drawer-open");
+        } else {
+          body.classList.remove("sidebar-collapsed");
+          writeSidebarPreference("false");
+        }
+        syncSidebarA11y();
+        requestAnimationFrame(() => search.focus());
+      }
+
+      function closeSidebar({ restoreFocus = true } = {}) {
+        if (mobileQuery.matches) {
+          body.classList.remove("drawer-open");
+        } else {
+          body.classList.add("sidebar-collapsed");
+          writeSidebarPreference("true");
+        }
+        syncSidebarA11y();
+        if (restoreFocus) requestAnimationFrame(() => menuButton.focus());
+      }
+
+      menuButton.addEventListener("click", openSidebar);
+      closeButton.addEventListener("click", () => closeSidebar());
+      overlay.addEventListener("click", () => closeSidebar());
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && mobileQuery.matches && body.classList.contains("drawer-open")) {
+          closeSidebar();
+          return;
+        }
+        if (event.key !== "Tab" || !mobileQuery.matches || !body.classList.contains("drawer-open")) return;
+        const focusable = [...sidebar.querySelectorAll('a[href], button:not([disabled]), input:not([disabled])')].filter((node) => !node.closest("[hidden]"));
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      });
+
+      function handleViewportChange() {
+        body.classList.remove("drawer-open");
+        if (!mobileQuery.matches) {
+          body.classList.toggle("sidebar-collapsed", readSidebarPreference() === "true");
+        }
+        syncSidebarA11y();
+      }
+      mobileQuery.addEventListener("change", handleViewportChange);
+      handleViewportChange();
+
+      tocLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          if (mobileQuery.matches) closeSidebar({ restoreFocus: false });
+        });
+      });
+
+      function filterToc() {
+        const query = search.value.trim().toLocaleLowerCase("zh-CN");
+        let visibleGroups = 0;
+        groups.forEach((group) => {
+          const links = [...group.querySelectorAll(".toc-link")];
+          const rootLink = group.querySelector(".toc-module-link");
+          const rootMatches = !query || rootLink.textContent.toLocaleLowerCase("zh-CN").includes(query);
+          let childMatches = 0;
+          links.slice(1).forEach((link) => {
+            const matches = !query || rootMatches || link.textContent.toLocaleLowerCase("zh-CN").includes(query);
+            link.closest("li").hidden = !matches;
+            if (matches) childMatches += 1;
+          });
+          const groupMatches = rootMatches || childMatches > 0;
+          group.hidden = !groupMatches;
+          if (groupMatches) visibleGroups += 1;
+          if (query && groupMatches) setGroup(group, true);
+        });
+        tocEmpty.hidden = visibleGroups !== 0;
+      }
+      search.addEventListener("input", filterToc);
+
+      function activateHeading(id, shouldReveal = true) {
+        if (!id || id === activeId) return;
+        activeId = id;
+        tocLinks.forEach((link) => {
+          const isActive = link.dataset.headingId === id;
+          if (isActive) link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
+          if (isActive) {
+            const group = link.closest("[data-toc-group]");
+            if (group && !group.classList.contains("is-open")) setGroup(group, true);
+            if (shouldReveal && !search.value) link.scrollIntoView({ block: "nearest" });
+          }
+        });
+      }
+
+      const headingObserver = new IntersectionObserver((entries) => {
+        const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) activateHeading(visible[0].target.id);
+      }, { rootMargin: "-12% 0px -76% 0px", threshold: [0, 1] });
+      headings.forEach((heading) => headingObserver.observe(heading));
+
+      function updateScrollState() {
+        scrollQueued = false;
+        const scrollTop = window.scrollY;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (maxScroll > 0 ? Math.min(100, scrollTop / maxScroll * 100) : 0) + "%";
+
+        let current = headings[0];
+        const marker = scrollTop + Math.min(180, window.innerHeight * 0.22);
+        for (const heading of headings) {
+          if (heading.offsetTop <= marker) current = heading;
+          else break;
+        }
+        activateHeading(current.id, false);
+      }
+      window.addEventListener("scroll", () => {
+        if (!scrollQueued) {
+          scrollQueued = true;
+          requestAnimationFrame(updateScrollState);
+        }
+      }, { passive: true });
+      window.addEventListener("resize", updateScrollState, { passive: true });
+      updateScrollState();
+
+      document.querySelectorAll("pre").forEach((pre) => {
+        const code = pre.querySelector("code");
+        if (!code) return;
+        const languageClass = [...code.classList].find((name) => name.startsWith("language-"));
+        const language = languageClass ? languageClass.replace("language-", "") : "code";
+        const wrapper = document.createElement("div");
+        wrapper.className = "code-block";
+        const toolbar = document.createElement("div");
+        toolbar.className = "code-toolbar";
+        toolbar.innerHTML = '<span>' + language + '</span><button class="copy-code" type="button" aria-label="复制代码">复制</button>';
+        pre.before(wrapper);
+        wrapper.append(toolbar, pre);
+        pre.tabIndex = 0;
+
+        toolbar.querySelector("button").addEventListener("click", async (event) => {
+          const button = event.currentTarget;
+          try {
+            await navigator.clipboard.writeText(code.textContent);
+            button.textContent = "已复制";
+            document.getElementById("copy-status").textContent = "代码已复制";
+          } catch {
+            const range = document.createRange();
+            range.selectNodeContents(code);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            button.textContent = "请按 ⌘C";
+          }
+          window.setTimeout(() => { button.textContent = "复制"; }, 1600);
+        });
+      });
+
+      document.querySelectorAll("td").forEach((cell) => {
+        const value = cell.textContent.trim();
+        const classes = { "简单": "easy", "中等": "medium", "困难": "hard" };
+        if (!classes[value]) return;
+        cell.innerHTML = '<span class="difficulty ' + classes[value] + '">' + value + '</span>';
+      });
+
+      document.querySelectorAll('a[href^="http"]').forEach((link) => {
+        if (link.hasAttribute("data-same-tab")) return;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      });
+
+      if (location.hash) {
+        const targetId = decodeURIComponent(location.hash.slice(1));
+        activateHeading(targetId, false);
+        const activeLink = document.querySelector('.toc-link[data-heading-id="' + CSS.escape(targetId) + '"]');
+        if (activeLink) setGroup(activeLink.closest("[data-toc-group]"), true);
+        const targetHeading = document.getElementById(targetId);
+        if (targetHeading) {
+          requestAnimationFrame(() => {
+            targetHeading.scrollIntoView({ block: "start" });
+            window.setTimeout(updateScrollState, 120);
+          });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
+`;
+
+fs.writeFileSync(outputPath, html, "utf8");
+console.log(`Generated ${outputPath}`);
+console.log(`Headings: ${headings.length}; bytes: ${Buffer.byteLength(html)}`);

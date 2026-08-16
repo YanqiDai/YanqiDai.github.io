@@ -1,10 +1,10 @@
 # Yanqi Dai's Homepage
 
-这是一个由单个 `index.html` 文件生成的个人主页。除头像外，姓名、邮箱、简介、论文、实习经历和获奖信息等内容都集中在 `index.html` 文件最前面的变量区中。
+根目录的 `index.html` 是已经生成好的静态主页，可以直接双击打开，也可以由 GitHub Pages 原样发布。姓名、邮箱、简介、论文、实习经历、获奖信息和博客入口等可编辑内容集中在 `_source/homepage.liquid` 文件最前面的变量区中。
 
 ## 修改主页内容
 
-打开 `index.html`，找到文件顶部由两行 `---` 包围的 `EDITABLE CONTENT` 区域：
+打开 `_source/homepage.liquid`，找到文件顶部由两行 `---` 包围的 `EDITABLE CONTENT` 区域：
 
 ```yaml
 ---
@@ -22,10 +22,27 @@ experience:
 
 awards:
   # ...
+
+blogs:
+  # ...
 ---
 ```
 
-通常只需修改这个区域，不需要修改后面的 HTML、CSS 或 JavaScript。
+通常只需修改这个区域，不需要修改后面的 HTML、CSS 或 JavaScript。根目录 `index.html` 是生成文件，不要直接编辑，否则下次生成时会被覆盖。
+
+## 生成并本地预览
+
+修改模板后，在仓库根目录运行：
+
+```bash
+ruby scripts/build_homepage.rb
+```
+
+脚本只使用 macOS 自带的 Ruby 标准库，不需要安装 Jekyll、Liquid 或其他依赖。生成完成后可以直接双击 `index.html`，也可以运行：
+
+```bash
+open index.html
+```
 
 ### 个人信息
 
@@ -88,7 +105,7 @@ hero_intro: >-
 
 页面会按照文件中的顺序展示经历。
 
-论文、经历、奖项和社交链接同样支持任意数量。增加条目后，页面会自动增加卡片、行或网格，不需要修改 HTML 模板。
+论文、经历、奖项、博客和社交链接同样支持任意数量。增加条目后，页面会自动增加卡片、行或网格，不需要修改 HTML 模板。
 
 ### 荣誉与奖项
 
@@ -102,6 +119,19 @@ hero_intro: >-
 
 如果奖项没有颁发单位，可以省略 `organization`。
 
+### 博客
+
+在 `blogs.items` 中增加、删除或调整博客顺序。每张卡片的格式如下：
+
+```yaml
+- title: "Blog title"
+  description: "A short introduction shown on the homepage."
+  url: "blogs/leetcode-hot100/index.html"
+  cta: "Read the blog"
+```
+
+`url` 填写相对于主页的文件路径，例如 `blogs/leetcode-hot100/index.html`。每篇博客放在 `blogs/` 下独立的文件夹中，便于后续继续添加和管理；博客卡片整张都可以点击。显式写出 `index.html` 可以同时兼容本地双击打开和 GitHub Pages。
+
 ### 更换头像
 
 当前头像位于 `images/yanqidai.jpg`。有两种更换方式：
@@ -110,7 +140,7 @@ hero_intro: >-
 2. 将新图片放入 `images` 目录，然后修改 `profile.image`，例如：
 
 ```yaml
-image: "/images/new-profile.jpg"
+image: "images/new-profile.jpg"
 ```
 
 ### 更换背景图
@@ -118,8 +148,8 @@ image: "/images/new-profile.jpg"
 桌面背景位于 `images/mountain-background.jpg`，移动端背景位于 `images/mountain-background-mobile.jpg`。建议分别准备横向和竖向 JPEG 图片并进行压缩。更换文件后修改：
 
 ```yaml
-background_image: "/images/your-background.jpg"
-background_image_mobile: "/images/your-background-mobile.jpg"
+background_image: "images/your-background.jpg"
+background_image_mobile: "images/your-background-mobile.jpg"
 ```
 
 页面会自动添加深色或浅色遮罩，以保证文字可读性。桌面端照片会随鼠标产生轻微视差；触摸设备或开启“减少动态效果”的设备会自动使用静态背景。
@@ -133,16 +163,17 @@ background_image_mobile: "/images/your-background-mobile.jpg"
 - 列表中的每一项以 `-` 开头。
 - 建议用双引号包裹文本，尤其是包含 `:`、`#` 或特殊符号的内容。
 - 不要删除变量区开头和结尾的 `---`。
-- 页面内容由 GitHub Pages 构建，直接双击本地 `index.html` 不会完成变量渲染。
+- 修改 `_source/homepage.liquid` 后必须重新运行生成脚本，并同时提交模板与生成后的 `index.html`。
+- 根目录 `index.html` 不再包含 Front Matter 或 Liquid 标记，直接双击即可正常打开。
 
 ## 发布到 GitHub Pages
 
 修改完成后提交并推送到 GitHub：
 
 ```bash
-git add index.html README.md images/
+git add index.html README.md _source/homepage.liquid scripts/build_homepage.rb images/ blogs/
 git commit -m "Update homepage content"
 git push
 ```
 
-推送后，GitHub Pages 会自动读取 `index.html` 顶部的变量并重新生成主页。通常等待一到几分钟即可看到更新。
+推送后，GitHub Pages 会直接发布生成好的静态 `index.html`。通常等待一到几分钟即可看到更新。

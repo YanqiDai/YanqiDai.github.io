@@ -1,0 +1,43 @@
+{
+  "plan_count": 100,
+  "detail_count": 100,
+  "missing": [],
+  "mismatches": [],
+  "difficulty": {
+    "EASY": 20,
+    "MEDIUM": 68,
+    "HARD": 12
+  },
+  "module_counts": {
+    "哈希": 3,
+    "双指针": 4,
+    "滑动窗口": 2,
+    "子串": 3,
+    "普通数组": 5,
+    "矩阵": 4,
+    "链表": 14,
+    "二叉树": 15,
+    "图论": 4,
+    "回溯": 8,
+    "二分查找": 6,
+    "栈": 5,
+    "堆": 3,
+    "贪心算法": 4,
+    "动态规划": 10,
+    "多维动态规划": 5,
+    "技巧": 5
+  },
+  "empty_content": [],
+  "empty_python_signature": [],
+  "guide_coverage": {
+    "file": "../README.md",
+    "lines": 1872,
+    "characters": 49341,
+    "expected_questions": 100,
+    "covered_questions": 100,
+    "missing_slugs": [],
+    "unexpected_slugs": [],
+    "code_fences": 112,
+    "code_fences_balanced": true
+  }
+}
