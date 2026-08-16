@@ -1,0 +1,201 @@
+# ============================================================
+# HOMEPAGE CONTENT
+# Edit this file to update the information shown on the homepage.
+# GitHub Pages/Jekyll reads it automatically; no build script is needed.
+# ============================================================
+
+profile:
+  site_url: "https://yanqidai.github.io"
+  name: "Yanqi Dai"
+  name_zh: "代彦琪"
+  initials: "YD"
+  email: "yanqidai@ruc.edu.cn"
+  description: "AI Ph.D. Candidate working on LMMs, RL for reasoning, and MTL."
+  image: "images/yanqidai.jpg"
+  background_image: "images/mountain-background.jpg"
+  background_image_mobile: "images/mountain-background-mobile.jpg"
+  footer_year: "2026"
+
+  hero_intro: >-
+    Expected to graduate in <strong>June 2027</strong>, I am seeking industry
+    positions focused on foundation models, including LLMs, VLMs, and UMMs.
+    Feel free to reach out if you have relevant opportunities or insights to share.
+  role: "Ph.D. Candidate in AI"
+  affiliation:
+    - "Gaoling School of Artificial Intelligence"
+    - "Renmin University of China"
+  research_chips:
+    - "Large Multimodal Models"
+    - "RL for Reasoning"
+    - "Multi-Task Learning"
+
+  about:
+    kicker: "About me"
+    heading: "Capable and versatile multimodal intelligence."
+    paragraphs:
+      - >-
+        I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial
+        Intelligence at Renmin University of China, advised by Prof. Zhiwu Lu.
+        I was a visiting student in the College of Computing and Data Science at
+        Nanyang Technological University, advised by Prof. Hanwang Zhang. Before
+        my doctoral studies, I received my B.E. from the School of Software at
+        Dalian University of Technology.
+      - >-
+        My research and industry experience spans <strong>large multimodal
+        models</strong>, <strong>reinforcement learning for reasoning</strong>,
+        and <strong>multi-task optimization</strong>, covering the full R&D
+        pipeline from data construction and filtering to algorithm design,
+        model training, and evaluation. I have published multiple first-author
+        papers at <strong>ICLR, WWW, and UAI</strong>, with the broader goal of
+        building more capable and versatile multimodal models. In industry, I
+        work extensively on data construction and filtering for vision-language
+        pretraining of <strong>Zhipu AI's GLM foundation models</strong>.
+        Previously, as a core technical contributor on the startup team at
+        Metabrain AGI, I helped develop ChatImg and the
+        Awaker series of Chinese large multimodal models.
+    map_core: "Large<br>Multimodal<br>Models"
+    map_nodes:
+      - "Data & Task Balancing"
+      - "RL for Reasoning"
+      - "Multimodal Role-Playing Agents"
+      - "Visual Instruction Tuning"
+
+  social_links:
+    - label: "Google Scholar"
+      url: "https://scholar.google.com/citations?user=bvuNVL8AAAAJ"
+      hero: true
+    - label: "Email"
+      email: true
+      hero: true
+    - label: "GitHub"
+      url: "https://github.com/YanqiDai"
+    - label: "Hugging Face"
+      url: "https://huggingface.co/YanqiDai"
+    - label: "LinkedIn"
+      url: "https://www.linkedin.com/in/yanqi-dai-5475a01a7"
+    - label: "Xiaohongshu"
+      url: "https://www.xiaohongshu.com/user/profile/5ba9eeb265f0230001b86ede"
+
+papers:
+  kicker: "Selected papers"
+  heading: "Research highlights."
+  note: "† Equal contribution. * Corresponding author."
+  items:
+    - venue: "ICLR 2026"
+      short_name: "MathForge"
+      title: "Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation"
+      authors: "Yanqi Dai, Yuxiang Ji, Xiao Zhang, Yong Wang*, Xiangxiang Chu, Zhiwu Lu*"
+      highlight: "Hugging Face Daily Papers #2 of the day."
+      links:
+        - label: "Paper"
+          url: "https://openreview.net/pdf?id=nfURupkdRJ"
+        - label: "Code"
+          url: "https://github.com/AMAP-ML/MathForge"
+        - label: "Data"
+          url: "https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented"
+        - label: "News"
+          url: "https://mp.weixin.qq.com/s/ilHVq-lbdWnzDgWAw3xNHQ"
+
+    - venue: "WWW 2026 · Oral"
+      short_name: "VisATB"
+      title: "Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty"
+      authors: "Yanqi Dai, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu*"
+      links:
+        - label: "Paper"
+          url: "https://dl.acm.org/doi/epdf/10.1145/3774904.3792371"
+        - label: "Code"
+          url: "https://github.com/YanqiDai/VisATB"
+        - label: "News"
+          url: "https://mp.weixin.qq.com/s/Daz8KaCvQ44XPp4R_Wqf-A"
+
+    - venue: "ICLR 2025"
+      short_name: "MMRole"
+      title: "MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents"
+      authors: "Yanqi Dai, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen*, Zhiwu Lu*"
+      links:
+        - label: "Paper"
+          url: "https://openreview.net/pdf?id=FGSgsefE0Y"
+        - label: "Code"
+          url: "https://github.com/YanqiDai/MMRole"
+        - label: "Data"
+          url: "https://huggingface.co/datasets/YanqiDai/MMRole_dataset"
+        - label: "News"
+          url: "https://mp.weixin.qq.com/s/I8gyDv9K8uhB3EXF_2_zVw"
+
+    - venue: "Technical Report"
+      short_name: "Awaker2.5-VL"
+      title: "Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts"
+      authors: "Jinqiang Long†, Yanqi Dai†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu"
+      links:
+        - label: "Paper"
+          url: "https://arxiv.org/abs/2411.10669"
+        - label: "Code"
+          url: "https://github.com/MetabrainAGI/Awaker2.5-VL"
+        - label: "News"
+          url: "https://mp.weixin.qq.com/s/R-D1QKht61YETfBep10nAQ"
+
+    - venue: "UAI 2023"
+      short_name: "IGB"
+      title: "Improvable Gap Balancing for Multi-Task Learning"
+      authors: "Yanqi Dai, Nanyi Fei, Zhiwu Lu*"
+      links:
+        - label: "Paper"
+          url: "https://proceedings.mlr.press/v216/dai23a/dai23a.pdf"
+        - label: "Code"
+          url: "https://github.com/YanqiDai/IGB4MTL"
+
+experience:
+  kicker: "Experience"
+  heading: "From research labs to foundation-model teams."
+  items:
+    - period: "May 2026 — Present"
+      location: "Beijing"
+      role: "Algorithm Intern"
+      team: "VLM Pretraining Team in Base Group"
+      organization: "Zhipu AI"
+    - period: "Mar 2025 — Sep 2025"
+      location: "Beijing"
+      role: "Research Intern"
+      team: "Machine Learning Team"
+      organization: "Amap-Alibaba Group"
+    - period: "Jun 2023 — Feb 2025"
+      location: "Beijing"
+      role: "Algorithm Intern"
+      team: "Model Team"
+      organization: "Metabrain AGI"
+
+awards:
+  kicker: "Selected honors & awards"
+  heading: "Recognition."
+  items:
+    - title: "Excellent Scholarship for Postgraduate Study"
+      organization: "Renmin University of China"
+      year: "2025"
+    - title: "Excellent Scholarship for Postgraduate Study"
+      organization: "Renmin University of China"
+      year: "2023"
+    - title: "Scientific Research Fund"
+      organization: "Renmin University of China"
+      year: "2023"
+    - title: "First-Class Academic Scholarship for Postgraduate Study"
+      organization: "Renmin University of China"
+      year: "2023"
+    - title: "Outstanding Graduate"
+      organization: "Liaoning Province"
+      year: "2022"
+    - title: "Toly Bread Alumni Scholarship"
+      organization: "Dalian University of Technology"
+      year: "2020 / 2019"
+    - title: "First Prize National Mathematics Competition for College Students"
+      year: "2019"
+
+blogs:
+  kicker: "Blogs & notes"
+  heading: "Learning, distilled."
+  items:
+    - title: "LeetCode 热题 100：刷题前算法知识详解（Python 版）"
+      date: "2026-08-16"
+      description: "A structured Chinese study guide covering the algorithms, data structures, solution patterns, and Python templates behind all 100 problems."
+      url: "blogs/leetcode-hot100/index.html"
+      cta: "Read the blog"
+

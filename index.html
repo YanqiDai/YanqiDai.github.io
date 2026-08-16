@@ -1,11 +1,19 @@
+---
+layout: null
+---
+{% assign homepage = site.data.homepage %}
+{% assign profile = homepage.profile %}
+{% assign papers = homepage.papers %}
+{% assign experience = homepage.experience %}
+{% assign awards = homepage.awards %}
+{% assign blogs = homepage.blogs %}
 <!DOCTYPE html>
-  <!-- Generated from _source/homepage.liquid. Edit the source, then run: ruby scripts/build_homepage.rb -->
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AI Ph.D. Candidate working on LMMs, RL for reasoning, and MTL." />
-  <title>Yanqi Dai's Homepage</title>
+  <meta name="description" content="{{ profile.description | escape }}" />
+  <title>{{ profile.name | escape }}'s Homepage</title>
 
   <!-- Theme color follows the dark/light surface -->
   <meta name="theme-color" content="#03070b" media="(prefers-color-scheme: dark)" />
@@ -16,14 +24,14 @@
 
   <!-- Open Graph / Twitter share cards -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Yanqi Dai's Homepage" />
-  <meta property="og:description" content="AI Ph.D. Candidate working on LMMs, RL for reasoning, and MTL." />
-  <meta property="og:url" content="https://yanqidai.github.io/" />
-  <meta property="og:image" content="https://yanqidai.github.io/images/yanqidai.jpg" />
+  <meta property="og:title" content="{{ profile.name | escape }}'s Homepage" />
+  <meta property="og:description" content="{{ profile.description | escape }}" />
+  <meta property="og:url" content="{{ profile.site_url | escape }}/" />
+  <meta property="og:image" content="{{ profile.site_url | escape }}/{{ profile.image | escape }}" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Yanqi Dai's Homepage" />
-  <meta name="twitter:description" content="AI Ph.D. Candidate working on LMMs, RL for reasoning, and MTL." />
-  <meta name="twitter:image" content="https://yanqidai.github.io/images/yanqidai.jpg" />
+  <meta name="twitter:title" content="{{ profile.name | escape }}'s Homepage" />
+  <meta name="twitter:description" content="{{ profile.description | escape }}" />
+  <meta name="twitter:image" content="{{ profile.site_url | escape }}/{{ profile.image | escape }}" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1142,8 +1150,8 @@
   <div class="background-photo" aria-hidden="true">
     <img
       id="backgroundPhotoImage"
-      data-desktop-src="images/mountain-background.jpg"
-      data-mobile-src="images/mountain-background-mobile.jpg"
+      data-desktop-src="{{ profile.background_image | escape }}"
+      data-mobile-src="{{ profile.background_image_mobile | escape }}"
       alt=""
       fetchpriority="high"
       decoding="async"
@@ -1165,9 +1173,9 @@
   <div class="progress" id="progress"></div>
   <div class="container nav-wrap">
     <nav aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="Yanqi Dai homepage">
-        <span class="brand-mark">YD</span>
-        <span>Yanqi Dai</span>
+      <a class="brand" href="#top" aria-label="{{ profile.name | escape }} homepage">
+        <span class="brand-mark">{{ profile.initials | escape }}</span>
+        <span>{{ profile.name | escape }}</span>
       </a>
       <div class="nav-links" id="navLinks">
         <a href="#about">About</a>
@@ -1198,51 +1206,35 @@
 
   <header class="hero container" id="top">
     <div class="hero-copy">
-      <h1><span class="hero-name">Yanqi Dai</span><br>代彦琪</h1>
+      <h1><span class="hero-name">{{ profile.name | escape }}</span><br>{{ profile.name_zh | escape }}</h1>
       <p class="hero-lead">
-        Expected to graduate in <strong>June 2027</strong>, I am seeking industry positions focused on foundation models, including LLMs, VLMs, and UMMs. Feel free to reach out if you have relevant opportunities or insights to share.
+        {{ profile.hero_intro }}
       </p>
       <div class="cta-row">
-
-
-            <a class="btn" href="https://scholar.google.com/citations?user=bvuNVL8AAAAJ" target="_blank" rel="noreferrer">Google Scholar</a>
-
-
-
-            <a class="btn" href="mailto:yanqidai@ruc.edu.cn">Email</a>
-
-
-
-
-
-
-
-
-
-
+        {% for link in profile.social_links %}
+          {% if link.hero %}
+            <a class="btn" href="{% if link.email %}mailto:{{ profile.email | escape }}{% else %}{{ link.url | escape }}{% endif %}"{% unless link.email %} target="_blank" rel="noreferrer"{% endunless %}>{{ link.label | escape }}</a>
+          {% endif %}
+        {% endfor %}
         <a class="btn primary" href="#papers">Explore papers <span aria-hidden="true">↘</span></a>
       </div>
     </div>
 
     <aside class="hero-card" aria-label="Profile card">
       <div class="portrait-wrap">
-        <img src="images/yanqidai.jpg" alt="Yanqi Dai portrait" fetchpriority="high" decoding="async" onerror="this.style.display='none'" />
+        <img src="{{ profile.image | escape }}" alt="{{ profile.name | escape }} portrait" fetchpriority="high" decoding="async" onerror="this.style.display='none'" />
         <div class="status-card">
-          <h2>Ph.D. Candidate in AI</h2>
-          <p>Gaoling School of Artificial Intelligence<br>Renmin University of China</p>
+          <h2>{{ profile.role | escape }}</h2>
+          <p>{% for line in profile.affiliation %}{{ line | escape }}{% unless forloop.last %}<br>{% endunless %}{% endfor %}</p>
         </div>
       </div>
-
+      {% if profile.research_chips.size > 0 %}
         <div class="research-chips" aria-label="Research interests">
-
-            <span class="research-chip">Large Multimodal Models</span>
-
-            <span class="research-chip">RL for Reasoning</span>
-
-            <span class="research-chip">Multi-Task Learning</span>
-
+          {% for chip in profile.research_chips %}
+            <span class="research-chip">{{ chip | escape }}</span>
+          {% endfor %}
         </div>
-
+      {% endif %}
     </aside>
   </header>
 
@@ -1250,36 +1242,28 @@
     <section id="about" class="container">
       <div class="section-head">
         <div>
-          <div class="section-kicker">About me</div>
-          <h2 class="section-title">Capable and versatile multimodal intelligence.</h2>
+          <div class="section-kicker">{{ profile.about.kicker | escape }}</div>
+          <h2 class="section-title">{{ profile.about.heading | escape }}</h2>
         </div>
       </div>
 
       <div class="research-grid">
         <article class="glass about-card">
-
-            <p>I am a fourth-year Ph.D. candidate in the Gaoling School of Artificial Intelligence at Renmin University of China, advised by Prof. Zhiwu Lu. I was a visiting student in the College of Computing and Data Science at Nanyang Technological University, advised by Prof. Hanwang Zhang. Before my doctoral studies, I received my B.E. from the School of Software at Dalian University of Technology.</p>
-
-            <p>My research and industry experience spans <strong>large multimodal models</strong>, <strong>reinforcement learning for reasoning</strong>, and <strong>multi-task optimization</strong>, covering the full R&D pipeline from data construction and filtering to algorithm design, model training, and evaluation. I have published multiple first-author papers at <strong>ICLR, WWW, and UAI</strong>, with the broader goal of building more capable and versatile multimodal models. In industry, I work extensively on data construction and filtering for vision-language pretraining of <strong>Zhipu AI's GLM foundation models</strong>. Previously, as a core technical contributor on the startup team at Metabrain AGI, I helped develop <strong>ChatImg</strong> and the <strong>Awaker</strong> series of Chinese large multimodal models.</p>
-
+          {% for paragraph in profile.about.paragraphs %}
+            <p>{{ paragraph }}</p>
+          {% endfor %}
         </article>
 
         <article class="glass orbital-card" aria-label="Research map">
           <div class="orbit">
-            <div class="core">Large<br>Multimodal<br>Models</div>
-
+            <div class="core">{{ profile.about.map_core }}</div>
+            {% if profile.about.map_nodes.size > 0 %}
               <div class="orbit-nodes">
-
-                  <div class="node">Data &amp; Task Balancing</div>
-
-                  <div class="node">RL for Reasoning</div>
-
-                  <div class="node">Multimodal Role-Playing Agents</div>
-
-                  <div class="node">Visual Instruction Tuning</div>
-
+                {% for node in profile.about.map_nodes %}
+                  <div class="node">{{ node | escape }}</div>
+                {% endfor %}
               </div>
-
+            {% endif %}
           </div>
         </article>
       </div>
@@ -1288,153 +1272,89 @@
     <section id="papers" class="container">
       <div class="section-head">
         <div>
-          <div class="section-kicker">Selected papers</div>
-          <h2 class="section-title">Research highlights.</h2>
+          <div class="section-kicker">{{ papers.kicker | escape }}</div>
+          <h2 class="section-title">{{ papers.heading | escape }}</h2>
         </div>
       </div>
 
       <div class="papers-grid">
-
+        {% for paper in papers.items %}
         <article class="paper-card">
-          <div class="paper-meta"><span class="venue">ICLR 2026</span><span class="paper-year">MathForge</span></div>
-          <h3>Harder Is Better: Boosting Mathematical Reasoning via Difficulty-Aware GRPO and Multi-Aspect Question Reformulation</h3>
-          <p>Yanqi Dai, Yuxiang Ji, Xiao Zhang, Yong Wang*, Xiangxiang Chu, Zhiwu Lu*</p>
-          <p class="paper-highlight"><strong>Hugging Face Daily Papers #2 of the day.</strong></p>
+          <div class="paper-meta"><span class="venue">{{ paper.venue | escape }}</span><span class="paper-year">{{ paper.short_name | escape }}</span></div>
+          <h3>{{ paper.title | escape }}</h3>
+          <p>{{ paper.authors | escape }}</p>
+          {% if paper.highlight %}<p class="paper-highlight"><strong>{{ paper.highlight | escape }}</strong></p>{% endif %}
           <div class="paper-links">
-            <a class="mini-link" href="https://openreview.net/pdf?id=nfURupkdRJ" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/AMAP-ML/MathForge" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://huggingface.co/datasets/YanqiDai/MathForge_MATH-augmented" target="_blank" rel="noreferrer">Data</a><a class="mini-link" href="https://mp.weixin.qq.com/s/ilHVq-lbdWnzDgWAw3xNHQ" target="_blank" rel="noreferrer">News</a>
+            {% for link in paper.links %}<a class="mini-link" href="{{ link.url | escape }}" target="_blank" rel="noreferrer">{{ link.label | escape }}</a>{% endfor %}
           </div>
         </article>
-
-        <article class="paper-card">
-          <div class="paper-meta"><span class="venue">WWW 2026 · Oral</span><span class="paper-year">VisATB</span></div>
-          <h3>Adaptive Task Balancing for Visual Instruction Tuning via Inter-Task Contribution and Intra-Task Difficulty</h3>
-          <p>Yanqi Dai, Yong Wang, Zebin You, Dong Jing, Xiangxiang Chu, Zhiwu Lu*</p>
-
-          <div class="paper-links">
-            <a class="mini-link" href="https://dl.acm.org/doi/epdf/10.1145/3774904.3792371" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/VisATB" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://mp.weixin.qq.com/s/Daz8KaCvQ44XPp4R_Wqf-A" target="_blank" rel="noreferrer">News</a>
-          </div>
-        </article>
-
-        <article class="paper-card">
-          <div class="paper-meta"><span class="venue">ICLR 2025</span><span class="paper-year">MMRole</span></div>
-          <h3>MMRole: A Comprehensive Framework for Developing and Evaluating Multimodal Role-Playing Agents</h3>
-          <p>Yanqi Dai, Huanran Hu, Lei Wang, Shengjie Jin, Xu Chen*, Zhiwu Lu*</p>
-
-          <div class="paper-links">
-            <a class="mini-link" href="https://openreview.net/pdf?id=FGSgsefE0Y" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/MMRole" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://huggingface.co/datasets/YanqiDai/MMRole_dataset" target="_blank" rel="noreferrer">Data</a><a class="mini-link" href="https://mp.weixin.qq.com/s/I8gyDv9K8uhB3EXF_2_zVw" target="_blank" rel="noreferrer">News</a>
-          </div>
-        </article>
-
-        <article class="paper-card">
-          <div class="paper-meta"><span class="venue">Technical Report</span><span class="paper-year">Awaker2.5-VL</span></div>
-          <h3>Awaker2.5-VL: Stably Scaling MLLMs with Parameter-Efficient Mixture of Experts</h3>
-          <p>Jinqiang Long†, Yanqi Dai†, Guoxing Yang, Hongpeng Lin, Nanyi Fei, Yizhao Gao, Zhiwu Lu</p>
-
-          <div class="paper-links">
-            <a class="mini-link" href="https://arxiv.org/abs/2411.10669" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/MetabrainAGI/Awaker2.5-VL" target="_blank" rel="noreferrer">Code</a><a class="mini-link" href="https://mp.weixin.qq.com/s/R-D1QKht61YETfBep10nAQ" target="_blank" rel="noreferrer">News</a>
-          </div>
-        </article>
-
-        <article class="paper-card">
-          <div class="paper-meta"><span class="venue">UAI 2023</span><span class="paper-year">IGB</span></div>
-          <h3>Improvable Gap Balancing for Multi-Task Learning</h3>
-          <p>Yanqi Dai, Nanyi Fei, Zhiwu Lu*</p>
-
-          <div class="paper-links">
-            <a class="mini-link" href="https://proceedings.mlr.press/v216/dai23a/dai23a.pdf" target="_blank" rel="noreferrer">Paper</a><a class="mini-link" href="https://github.com/YanqiDai/IGB4MTL" target="_blank" rel="noreferrer">Code</a>
-          </div>
-        </article>
-
+        {% endfor %}
       </div>
-      <p class="paper-note">† Equal contribution. * Corresponding author.</p>
+      <p class="paper-note">{{ papers.note | escape }}</p>
     </section>
 
     <section id="experience" class="container">
       <div class="section-head">
         <div>
-          <div class="section-kicker">Experience</div>
-          <h2 class="section-title">From research labs to foundation-model teams.</h2>
+          <div class="section-kicker">{{ experience.kicker | escape }}</div>
+          <h2 class="section-title">{{ experience.heading | escape }}</h2>
         </div>
       </div>
 
       <div class="timeline">
-
+        {% for item in experience.items %}
         <div class="timeline-item">
           <span class="timeline-dot"></span>
-          <span class="date">May 2026 — Present · Beijing</span>
-          <h3>Algorithm Intern, VLM Pretraining Team in Base Group · Zhipu AI</h3>
+          <span class="date">{{ item.period | escape }}{% if item.location %} · {{ item.location | escape }}{% endif %}</span>
+          <h3>{{ item.role | escape }}{% if item.team %}, {{ item.team | escape }}{% endif %} · {{ item.organization | escape }}</h3>
         </div>
-
-        <div class="timeline-item">
-          <span class="timeline-dot"></span>
-          <span class="date">Mar 2025 — Sep 2025 · Beijing</span>
-          <h3>Research Intern, Machine Learning Team · Amap-Alibaba Group</h3>
-        </div>
-
-        <div class="timeline-item">
-          <span class="timeline-dot"></span>
-          <span class="date">Jun 2023 — Feb 2025 · Beijing</span>
-          <h3>Algorithm Intern, Model Team · Metabrain AGI</h3>
-        </div>
-
+        {% endfor %}
       </div>
     </section>
 
     <section id="awards" class="container">
       <div class="section-head">
         <div>
-          <div class="section-kicker">Selected honors &amp; awards</div>
-          <h2 class="section-title">Recognition.</h2>
+          <div class="section-kicker">{{ awards.kicker | escape }}</div>
+          <h2 class="section-title">{{ awards.heading | escape }}</h2>
         </div>
       </div>
 
       <div class="awards">
-
-          <div class="award"><strong>Excellent Scholarship for Postgraduate Study</strong>Renmin University of China · 2025</div>
-
-          <div class="award"><strong>Excellent Scholarship for Postgraduate Study</strong>Renmin University of China · 2023</div>
-
-          <div class="award"><strong>Scientific Research Fund</strong>Renmin University of China · 2023</div>
-
-          <div class="award"><strong>First-Class Academic Scholarship for Postgraduate Study</strong>Renmin University of China · 2023</div>
-
-          <div class="award"><strong>Outstanding Graduate</strong>Liaoning Province · 2022</div>
-
-          <div class="award"><strong>Toly Bread Alumni Scholarship</strong>Dalian University of Technology · 2020 / 2019</div>
-
-          <div class="award"><strong>First Prize National Mathematics Competition for College Students</strong>2019</div>
-
+        {% for award in awards.items %}
+          <div class="award"><strong>{{ award.title | escape }}</strong>{% if award.organization %}{{ award.organization | escape }} · {% endif %}{{ award.year | escape }}</div>
+        {% endfor %}
       </div>
     </section>
 
     <section id="blogs" class="container">
       <div class="section-head">
         <div>
-          <div class="section-kicker">Blogs &amp; notes</div>
-          <h2 class="section-title">Learning, distilled.</h2>
+          <div class="section-kicker">{{ blogs.kicker | escape }}</div>
+          <h2 class="section-title">{{ blogs.heading | escape }}</h2>
         </div>
       </div>
 
       <div class="blogs-grid">
-
+        {% for post in blogs.items %}
           <article class="blog-card-shell">
             <a
               class="blog-card"
-              href="blogs/leetcode-hot100/index.html"
-              aria-labelledby="blog-title-1"
-              aria-describedby="blog-description-1"
+              href="{{ post.url | escape }}"
+              aria-labelledby="blog-title-{{ forloop.index }}"
+              aria-describedby="blog-description-{{ forloop.index }}"
             >
               <div class="blog-card-copy">
-
-                  <time class="blog-card-date" datetime="2026-08-16">Published · 2026-08-16</time>
-
-                <h3 id="blog-title-1">LeetCode 热题 100：刷题前算法知识详解（Python 版）</h3>
-                <p id="blog-description-1">A structured Chinese study guide covering the algorithms, data structures, solution patterns, and Python templates behind all 100 problems.</p>
+                {% if post.date %}
+                  <time class="blog-card-date" datetime="{{ post.date | escape }}">Published · {{ post.date | escape }}</time>
+                {% endif %}
+                <h3 id="blog-title-{{ forloop.index }}">{{ post.title | escape }}</h3>
+                <p id="blog-description-{{ forloop.index }}">{{ post.description | escape }}</p>
               </div>
-              <span class="blog-card-cta">Read the blog <span aria-hidden="true">↗</span></span>
+              <span class="blog-card-cta">{{ post.cta | escape }} <span aria-hidden="true">↗</span></span>
             </a>
           </article>
-
+        {% endfor %}
       </div>
     </section>
   </main>
@@ -1442,22 +1362,12 @@
   <footer class="footer" id="contact">
     <div class="container footer-inner">
       <div>
-        <strong>© 2026 Yanqi Dai (代彦琪)</strong>
+        <strong>© {{ profile.footer_year | escape }} {{ profile.name | escape }} ({{ profile.name_zh | escape }})</strong>
       </div>
       <div class="socials" aria-label="Social links">
-
-          <a href="https://scholar.google.com/citations?user=bvuNVL8AAAAJ" target="_blank" rel="noreferrer" aria-label="Google Scholar">Google Scholar</a>
-
-          <a href="mailto:yanqidai@ruc.edu.cn" aria-label="Email">Email</a>
-
-          <a href="https://github.com/YanqiDai" target="_blank" rel="noreferrer" aria-label="GitHub">GitHub</a>
-
-          <a href="https://huggingface.co/YanqiDai" target="_blank" rel="noreferrer" aria-label="Hugging Face">Hugging Face</a>
-
-          <a href="https://www.linkedin.com/in/yanqi-dai-5475a01a7" target="_blank" rel="noreferrer" aria-label="LinkedIn">LinkedIn</a>
-
-          <a href="https://www.xiaohongshu.com/user/profile/5ba9eeb265f0230001b86ede" target="_blank" rel="noreferrer" aria-label="Xiaohongshu">Xiaohongshu</a>
-
+        {% for link in profile.social_links %}
+          <a href="{% if link.email %}mailto:{{ profile.email | escape }}{% else %}{{ link.url | escape }}{% endif %}"{% unless link.email %} target="_blank" rel="noreferrer"{% endunless %} aria-label="{{ link.label | escape }}">{{ link.label | escape }}</a>
+        {% endfor %}
       </div>
     </div>
   </footer>
